@@ -1,0 +1,27 @@
+:root {
+    --background-color: #f0f8ff;
+    --main-color: #DEFFC0;
+    --greenForTransition: #1BFF06;
+    --colorForBoxes: #EAEAEA;
+}
+
+@font-face {
+    font-family: itim;
+    src: url(Z-extra/fonts/Itim/Itim-Regular.ttf)
+}
+
+@font-face {
+    font-family: jost;
+    src: url(Z-extra/fonts/Jost/static/Jost-Regular.ttf);
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--background-color);
+    font-family: itim;
+    font-size: 2vh;
+}
