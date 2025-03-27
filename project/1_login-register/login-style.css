@@ -64,7 +64,7 @@ input {
 }
 
 .button {
-    background-color: #add8e6;
+    background-color: #5eafda;
     border: none;
     padding: 3%;
     border-radius: 10px;
@@ -81,4 +81,5 @@ input {
     color: blue;
     text-decoration: none;
     font-size: 1vw;
+    cursor: pointer;
 }
