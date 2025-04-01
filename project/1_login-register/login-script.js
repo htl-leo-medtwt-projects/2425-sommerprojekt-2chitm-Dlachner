@@ -1,7 +1,8 @@
-let username = "";
-let password = "";
+let users = JSON.parse(localStorage.getItem('users')) || [];
+
 login();
 
+/* ======== Login ======== */
 
 function login() {
     document.body.innerHTML = `
@@ -18,14 +19,44 @@ function login() {
             <button id ="doneButton" class="button" disabled>Done</button>
             <br><br>
             <a onclick="register()" class="link">Register for free</a>
+            <br><br>
+            <span id="errorMessage" style="color: red; display: none;">Benutzername oder Passwort sind falsch.</span>
         </div>
     `;
+
     document.getElementById("doneButton").addEventListener("click", function () {
         if (!this.disabled) {
-            window.location.href = "../2_mainpage/mainpage-index.html";
+            authenticateUser();
         }
     });
 }
+
+function authenticateUser() {
+    let username = document.getElementById('usernameInput').value.toLowerCase();
+    let password = document.getElementById('passwordInput').value;
+
+    let userFound = false;
+    let errorMessage = document.getElementById('errorMessage');
+
+    errorMessage.style.display = "none";
+
+    for (let i = 0; i < users.length; i++) {
+        let user = users[i];
+
+        if (user.username.toLowerCase() === username && user.password === password) {
+            userFound = true;
+            window.location.href = "../2_mainpage/mainpage-index.html";
+            break;
+        }
+    }
+
+    if (!userFound) {
+        errorMessage.style.display = "inline";
+    }
+}
+
+
+/* ======== Registrieren ======== */
 
 function register() {
     document.body.innerHTML = `
@@ -34,6 +65,8 @@ function register() {
             <h2>Register</h2>
             <label>Username:</label>
             <input oninput="checkDoneRegister()" id="usernameInput" type="text" placeholder="Your username">
+            <span id="usernameError" style="color: red; display: none;">Username is already taken.</span>
+            <br>
             <label>Email:</label>
             <input oninput="checkDoneRegister()" id="emailInput" type="email" placeholder="Your email">
             <label>Password:</label>
@@ -49,10 +82,48 @@ function register() {
 
     document.getElementById("doneButton").addEventListener("click", function () {
         if (!this.disabled) {
-            window.location.href = "../2_mainpage/mainpage-index.html";
+            if (!isUsernameTaken()) {
+                saveUser();
+                window.location.href = "../2_mainpage/mainpage-index.html";
+            }
         }
     });
 }
+
+function isUsernameTaken() {
+    let username = document.getElementById('usernameInput').value;
+    let usernameError = document.getElementById('usernameError');
+
+    for (let i = 0; i < users.length; i++) {
+        if (users[i].username === username) {
+            usernameError.style.display = "inline";
+            return true;
+        }
+    }
+
+    usernameError.style.display = "none";
+    return false;
+}
+
+function saveUser() {
+    let username = document.getElementById('usernameInput').value;
+    let email = document.getElementById('emailInput').value;
+    let password = document.getElementById('passwordInput').value;
+    let phone = document.getElementById('phoneInput').value;
+
+    let newUser = {
+        username: username,
+        email: email,
+        password: password,
+        phone: phone
+    };
+
+    users.push(newUser);
+
+    localStorage.setItem('users', JSON.stringify(users));
+}
+
+/* ======== Registrieren ======== */
 
 function forgotPassword() {
     document.body.innerHTML = `
@@ -68,6 +139,7 @@ function forgotPassword() {
         </div>
     `;
 }
+
 function resetPassword() {
     document.body.innerHTML = `
         <div class="login-box">
@@ -80,16 +152,31 @@ function resetPassword() {
             <br><br>
             <button id="saveButton" class="button" onclick="saveNewPassword()">Save</button>
             <br><br>
+            <span id="errorMessage" style="color: red; display: none;">Passwords do not match. Please try again.</span>
+            <br><br>
             <a onclick="login()" class="link">Back to sign in</a>
         </div>
     `;
 }
+
+function saveNewPassword() {
+    let newPassword = document.getElementById('newPassword').value;
+    let confirmPassword = document.getElementById('confirmPassword').value;
+    let errorMessage = document.getElementById('errorMessage');
+
+    if (newPassword === confirmPassword && newPassword.trim() !== "") {
+        login();
+    } else {
+        errorMessage.style.display = "inline";
+    }
+}
+
 /*
-    * ===== Check done button =====
+    * ======== Check buttons ========
 */
 function checkDoneLogin() {
-    username = document.getElementById('usernameInput').value;
-    password = document.getElementById('passwordInput').value;
+    let username = document.getElementById('usernameInput').value;
+    let password = document.getElementById('passwordInput').value;
     let done = document.getElementById('doneButton');
 
     if (username != "" && password != "") {
@@ -100,9 +187,9 @@ function checkDoneLogin() {
 }
 
 function checkDoneRegister() {
-    username = document.getElementById('usernameInput').value;
+    let username = document.getElementById('usernameInput').value;
     let email = document.getElementById('emailInput').value;
-    password = document.getElementById('passwordInput').value;
+    let password = document.getElementById('passwordInput').value;
     let phone = document.getElementById('phoneInput').value;
     let done = document.getElementById('doneButton');
 
@@ -111,8 +198,6 @@ function checkDoneRegister() {
     } else {
         done.disabled = true;
     }
-    
-    /* Account hinzufügen noch machen */
 }
 
 function checkDoneForgot() {
@@ -121,19 +206,3 @@ function checkDoneForgot() {
 
     doneButton.disabled = username.trim() === "";
 }
-
-function saveNewPassword() {
-    let newPassword = document.getElementById('newPassword').value;
-    let confirmPassword = document.getElementById('confirmPassword').value;
-
-    if (newPassword === confirmPassword && newPassword.trim() !== "") {
-        alert("Password successfully changed!");
-        login();
-    } else {
-        alert("Passwords do not match. Please try again.");
-    }
-}
-
-/*
-    * ===== Forgot password =====
-*/
