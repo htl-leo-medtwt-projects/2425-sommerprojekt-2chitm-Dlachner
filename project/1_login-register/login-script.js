@@ -132,15 +132,37 @@ function forgotPassword() {
             <h2>Forgot password</h2>
             <label>Username:</label>
             <input oninput="checkDoneForgot()" id="usernameInput" type="text" placeholder="Your username">
+            <span id="usernameError" style="color: red; display: none;">Username not found.</span>
             <br><br>
-            <button id="doneButton" class="button" disabled onclick="resetPassword()">Done</button>
+            <button id="doneButton" class="button" disabled onclick="validateUsername()">Done</button>
             <br><br>
             <a onclick="login()" class="link">Back to sign in</a>
         </div>
     `;
 }
 
-function resetPassword() {
+function validateUsername() {
+    let username = document.getElementById('usernameInput').value;
+    let usernameError = document.getElementById('usernameError');
+    let userFound = false;
+    let foundUser = "";
+
+    for (let i = 0; i < users.length; i++) {
+        if (users[i].username.toLowerCase === username.toLowerCase) {
+            userFound = true;
+            foundUser = users[i].username;
+            break;
+        }
+    }
+
+    if (userFound) {
+        resetPassword(foundUser);
+    } else {
+        usernameError.style.display = "inline";
+    }
+}
+
+function resetPassword(username) {
     document.body.innerHTML = `
         <div class="login-box">
             <div class="frog">🐸</div>
@@ -150,7 +172,7 @@ function resetPassword() {
             <label>Confirm password:</label>
             <input type="password" id="confirmPassword" placeholder="Confirm password">
             <br><br>
-            <button id="saveButton" class="button" onclick="saveNewPassword()">Save</button>
+            <button id="saveButton" class="button" onclick="saveNewPassword('${username}')">Save</button>
             <br><br>
             <span id="errorMessage" style="color: red; display: none;">Passwords do not match. Please try again.</span>
             <br><br>
@@ -159,13 +181,29 @@ function resetPassword() {
     `;
 }
 
-function saveNewPassword() {
+function saveNewPassword(username) {
     let newPassword = document.getElementById('newPassword').value;
     let confirmPassword = document.getElementById('confirmPassword').value;
     let errorMessage = document.getElementById('errorMessage');
 
     if (newPassword === confirmPassword && newPassword.trim() !== "") {
-        login();
+        let userFound = false;
+
+        for (let i = 0; i < users.length; i++) {
+            if (users[i].username.toLowerCase() === username.toLowerCase()) {
+                users[i].password = newPassword;
+                userFound = true;
+                break;
+            }
+        }
+
+        if (userFound) {
+            localStorage.setItem('users', JSON.stringify(users));
+            login();
+        } else {
+            errorMessage.textContent = "User not found!";
+            errorMessage.style.display = "inline";
+        }
     } else {
         errorMessage.style.display = "inline";
     }
