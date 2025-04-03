@@ -115,7 +115,8 @@ function saveUser() {
         username: username,
         email: email,
         password: password,
-        phone: phone
+        phone: phone,
+        pp: "defaultPic.jpg"
     };
 
     users.push(newUser);
