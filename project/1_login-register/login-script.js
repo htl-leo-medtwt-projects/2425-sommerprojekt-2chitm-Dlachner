@@ -142,13 +142,13 @@ function forgotPassword() {
 }
 
 function validateUsername() {
-    let username = document.getElementById('usernameInput').value;
+    let username = document.getElementById('usernameInput').value.toLowerCase();
     let usernameError = document.getElementById('usernameError');
     let userFound = false;
     let foundUser = "";
 
     for (let i = 0; i < users.length; i++) {
-        if (users[i].username.toLowerCase === username.toLowerCase) {
+        if (users[i].username.toLowerCase() === username) {
             userFound = true;
             foundUser = users[i].username;
             break;
@@ -161,6 +161,7 @@ function validateUsername() {
         usernameError.style.display = "inline";
     }
 }
+
 
 function resetPassword(username) {
     document.body.innerHTML = `
