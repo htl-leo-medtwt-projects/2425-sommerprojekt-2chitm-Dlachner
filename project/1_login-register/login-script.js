@@ -45,6 +45,9 @@ function authenticateUser() {
 
         if (user.username.toLowerCase() === username && user.password === password) {
             userFound = true;
+
+            localStorage.setItem('loggedInUser', JSON.stringify(user));
+
             window.location.href = "../2_mainpage/mainpage-index.html";
             break;
         }
@@ -112,12 +115,14 @@ function saveUser() {
     let phone = document.getElementById('phoneInput').value;
 
     let newUser = {
-        username: username,
-        email: email,
-        password: password,
-        phone: phone,
-        pp: "defaultPic.jpg"
-    };
+        username,
+        email,
+        password,
+        phone,
+        pp: "defaultPic.jpg",
+        points: 0,
+        followers: []
+    };    
 
     users.push(newUser);
 

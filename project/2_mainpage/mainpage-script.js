@@ -1,3 +1,8 @@
+let currentUser = JSON.parse(localStorage.getItem('loggedInUser'));
+
+if (!currentUser) {
+    window.location.href = "../1_login-register/login-index.html";
+}
 let content = document.getElementById('content');
 
 function loadPage() {
@@ -20,7 +25,9 @@ function loadPage() {
         <main class="content">
             <header class="top-bar">
                 <input type="text" placeholder="Search" class="search-bar">
-                <div class="profile-icon">⚫</div>
+                <div class="profile-icon" title="${currentUser.username}">
+                    <img src="../Z-extra/pics/profilePic/${currentUser.pp}" alt="Profile Picture" class="profile-pic">
+                </div>
             </header>
 
             <!-- For You Section -->
@@ -56,3 +63,64 @@ function loadPage() {
 }
 
 loadPage();
+
+
+/*******************************************************
+ * 
+ *                  Account Management
+ * 
+ *******************************************************/
+
+const AccountManager = {
+    getAllUsers: function () {
+        return JSON.parse(localStorage.getItem('users')) || [];
+    },
+
+    saveAllUsers: function (users) {
+        localStorage.setItem('users', JSON.stringify(users));
+    },
+
+    getCurrentUser: function () {
+        return JSON.parse(localStorage.getItem('loggedInUser'));
+    },
+
+    saveCurrentUser: function (user) {
+        localStorage.setItem('loggedInUser', JSON.stringify(user));
+        let users = this.getAllUsers();
+        for (let i = 0; i < users.length; i++) {
+            if (users[i].username === user.username) {
+                users[i] = user;
+                break;
+            }
+        }
+        this.saveAllUsers(users);
+    },
+
+    addPoints: function (amount) {
+        let user = this.getCurrentUser();
+        if (!user.points) user.points = 0;
+        user.points += amount;
+        this.saveCurrentUser(user);
+    },
+
+    followStreamer: function (streamerName) {
+        let user = this.getCurrentUser();
+        if (!user.followers) user.followers = [];
+        if (!user.followers.includes(streamerName)) {
+            user.followers.push(streamerName);
+            this.saveCurrentUser(user);
+        }
+    },
+
+    isFollowing: function (streamerName) {
+        let user = this.getCurrentUser();
+        if (!user.followers) return false;
+        return user.followers.includes(streamerName);
+    },
+
+    resetPoints: function () {
+        let user = this.getCurrentUser();
+        user.points = 0;
+        this.saveCurrentUser(user);
+    }
+};

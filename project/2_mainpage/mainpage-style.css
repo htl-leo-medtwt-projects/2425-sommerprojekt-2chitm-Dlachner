@@ -140,3 +140,12 @@ nav a.active {
     background-size: cover;
     background-position: center;
 }
+
+.profile-pic {
+    width: 4vh;
+    height: 4vh;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid #aaa;
+    cursor: pointer;
+}
