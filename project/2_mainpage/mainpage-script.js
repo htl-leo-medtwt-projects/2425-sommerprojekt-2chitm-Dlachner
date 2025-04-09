@@ -60,9 +60,136 @@ function loadPage() {
             </section>
         </main>
     `
+    document.querySelector('.profile-icon').addEventListener('click', loadSettingsPage);
+}
+loadPage();
+
+
+/*******************************************************
+ * 
+ *                      Settings
+ * 
+ *******************************************************/
+function loadSettingsPage() {
+    content.innerHTML = `
+        <header class="top-bar settings-header">
+            <div class="logo">🐸 Froggo</div>
+        </header>
+
+        <main class="settings-main">
+            <div class="profile-settings">
+                <img src="../Z-extra/pics/profilePic/${currentUser.pp}" alt="Profilbild" class="settings-profile-pic" id="profile-pic-preview">
+
+                <h2>${currentUser.username}</h2>
+
+                <div class="settings-options">
+                    <label>📝 Neuer Name:
+                        <input type="text" id="new-username" placeholder="Neuer Name" value="${currentUser.username}">
+                    </label>
+
+                    <label>🔑 Neues Passwort:
+                        <input type="password" id="new-password" placeholder="Mind. 4 Zeichen">
+                    </label>
+
+                    <label>🖼️ Neues Profilbild:
+                        <select id="new-profile-pic">
+                            ${[
+                                "defaultPic.jpg",
+                                "bruh.webp",
+                                "face.webp",
+                                "hogrider.webp",
+                                "lebron.png",
+                                "lowtaper.jpeg"
+                            ].map(pic => `
+                                <option value="${pic}" ${currentUser.pp === pic ? "selected" : ""}>${pic}</option>
+                            `).join('')}
+                        </select>
+                    </label>
+
+                    <button onclick="saveSettings()">✅ Änderungen speichern</button>
+                    <button onclick="goBackToMain()">🔙 Zurück</button>
+
+                    <div id="save-confirmation" style="display: none; margin-top: 2vh; color: green; font-weight: bold;">✅ Änderungen gespeichert!</div>
+                </div>
+            </div>
+        </main>
+    `;
+
+    const profileSelect = document.getElementById("new-profile-pic");
+    const previewImg = document.getElementById("profile-pic-preview");
+
+    profileSelect.addEventListener("change", () => {
+        previewImg.src = `../Z-extra/pics/profilePic/${profileSelect.value}`;
+    });
 }
 
-loadPage();
+function saveSettings() {
+    let newUsername = document.getElementById("new-username").value.trim();
+    let newPassword = document.getElementById("new-password").value;
+    let newProfilePic = document.getElementById("new-profile-pic").value;
+
+    if (newUsername) currentUser.username = newUsername;
+    if (newPassword && newPassword.length >= 4) currentUser.password = newPassword;
+    currentUser.pp = newProfilePic;
+
+    AccountManager.saveCurrentUser(currentUser);
+
+    const confirmation = document.getElementById("save-confirmation");
+    confirmation.style.display = "block";
+
+    setTimeout(() => {
+        confirmation.style.display = "none";
+    }, 3000);
+}
+
+
+function changeUsername() {
+    let newName = prompt("Neuer Benutzername:");
+    if (newName && newName.trim() !== "") {
+        currentUser.username = newName.trim();
+        AccountManager.saveCurrentUser(currentUser);
+        loadSettingsPage();
+    }
+}
+
+function changePassword() {
+    let newPassword = prompt("Neues Passwort:");
+    if (newPassword && newPassword.length >= 4) {
+        currentUser.password = newPassword;
+        AccountManager.saveCurrentUser(currentUser);
+        alert("Passwort erfolgreich geändert.");
+    } else {
+        alert("Das Passwort muss mindestens 4 Zeichen lang sein.");
+    }
+}
+
+function changeProfilePicture() {
+    const availablePics = [
+        "defaultPic.jpg",
+        "bruh.webp",
+        "face.webp",
+        "hogrider.webp",
+        "lebron.png",
+        "lowtaper.jpeg"
+    ];
+
+    let list = availablePics.map((pic, index) => `${index + 1}: ${pic}`).join("\n");
+    let choice = prompt("Wähle eine Nummer für das neue Profilbild:\n" + list);
+
+    let index = parseInt(choice) - 1;
+    if (!isNaN(index) && availablePics[index]) {
+        currentUser.pp = availablePics[index];
+        AccountManager.saveCurrentUser(currentUser);
+        loadSettingsPage();
+    } else {
+        alert("Ungültige Auswahl.");
+    }
+}
+
+function goBackToMain() {
+    loadPage();
+}
+
 
 
 /*******************************************************

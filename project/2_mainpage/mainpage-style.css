@@ -149,3 +149,160 @@ nav a.active {
     border: 1px solid #aaa;
     cursor: pointer;
 }
+
+/*****************************************
+ * Settings Page Styling
+*****************************************/
+.settings-header {
+    background: var(--main-color);
+    padding: 2vh 2vw;
+    font-size: 3vh;
+    font-weight: bold;
+    text-align: center;
+    user-select: none;
+}
+
+.settings-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5vh 2vw;
+    gap: 3vh;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50vw);
+    text-align: center;
+}
+
+/* Profilbild */
+.settings-profile-pic {
+    width: 18vh;
+    height: 18vh;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 0.5vh solid #ccc;
+    box-shadow: 0 0.5vh 1vh rgba(0, 0, 0, 0.2);
+    margin-bottom: 2vh;
+}
+
+/* Settings Überschrift */
+.settings-main h2 {
+    font-size: 3vh;
+    margin: 1vh 0;
+    color: #333;
+    text-align: center;
+}
+
+/* Einstellungen Optionen */
+.settings-options {
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+    width: 100%;
+    max-width: 40vw;
+    text-align: center;
+}
+
+/* Buttons */
+.settings-options button {
+    font-size: 2.2vh;
+    padding: 1.5vh 2vw;
+    background-color: var(--main-color);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+    box-shadow: 0 0.5vh 1vh rgba(0, 0, 0, 0.2);
+}
+
+/* Button Hover-Effekte */
+.settings-options button:hover {
+    background-color: var(--greenForTransition);
+    transform: translateY(-2px);
+}
+
+/* Eingabefelder (für Username, Passwort) */
+.settings-options input {
+    padding: 1.2vh 2vw;
+    font-size: 2.2vh;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 30vw;
+    margin: 1vh 0;
+    box-sizing: border-box;
+}
+
+/* Fokus-Effekt für Inputs */
+.settings-options input:focus {
+    outline: none;
+    border-color: var(--greenForTransition);
+}
+
+/* Zusätzlicher Abstand bei Buttons */
+.settings-options button + button {
+    margin-top: 2vh;
+}
+
+/* Zurück-Button */
+.settings-options .back-button {
+    background-color: #ff4040;
+    color: white;
+}
+
+.settings-options .back-button:hover {
+    background-color: #ff7070;
+}
+
+.settings-options select {
+    padding: 1.2vh 2vw;
+    font-size: 2.2vh;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 30vw;
+    background-color: var(--background-color);
+    appearance: none;
+    text-align: center;
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: border-color 0.3s, background-color 0.3s;
+}
+
+/* Focus-Style für das Dropdown */
+.settings-options select:focus {
+    outline: none;
+    border-color: var(--greenForTransition);
+    background-color: #eaf9e6;
+}
+
+/* Custom Dropdown-Pfeil */
+.settings-options select::-ms-expand {
+    display: none;
+}
+
+.settings-options .dropdown-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 30vw;
+}
+
+.settings-options .dropdown-wrapper::after {
+    content: ' ▼';
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2vh;
+    color: #aaa;
+    pointer-events: none;
+}
+
+/* Übergangseffekte für das Dropdown */
+.settings-options select:hover {
+    border-color: var(--greenForTransition);
+    background-color: #eaf9e6;
+}

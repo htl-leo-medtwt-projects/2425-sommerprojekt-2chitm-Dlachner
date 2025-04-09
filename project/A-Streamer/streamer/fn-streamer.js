@@ -1,4 +1,4 @@
-[
+const fn_streamer = [
     {
         "Name": "KaiCenat",
         "Follower": 16700000,

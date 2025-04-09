@@ -1,4 +1,4 @@
-[
+const r6_streamer = [
     {
         "Name": "Jynxzi",
         "Follower": 7100000,
