@@ -127,6 +127,7 @@ function saveUser() {
     users.push(newUser);
 
     localStorage.setItem('users', JSON.stringify(users));
+    localStorage.setItem('loggedInUser', JSON.stringify(newUser));
 }
 
 /* ======== Registrieren ======== */
