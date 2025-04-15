@@ -13,7 +13,7 @@ const r6_streamer = [
         "Status": false,
         "Liveviewer": 0,
         "Pf": "../A-Streamer/pf/caseoh.webp",
-        "Stream": ""
+        "Stream": "../streams/caseoh1.mp4"
     },
     {
         "Name": "itsSpoit",
@@ -21,7 +21,7 @@ const r6_streamer = [
         "Status": false,
         "Liveviewer": 0,
         "Pf": "../A-Streamer/pf/itsSpoit.png",
-        "Stream": ""
+        "Stream": "../streams/itsspoit1.mp4"
     },
     {
         "Name": "shroud",
