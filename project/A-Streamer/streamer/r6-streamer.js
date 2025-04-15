@@ -29,7 +29,7 @@ const r6_streamer = [
         "Status": false,
         "Liveviewer": 0,
         "Pf": "../A-Streamer/pf/shroud.jpg",
-        "Stream": ""
+        "Stream": "../streams/shroud1.mp4"
     },
     {
         "Name": "thesketchreal",
@@ -37,7 +37,7 @@ const r6_streamer = [
         "Status": false,
         "Liveviewer": 0,
         "Pf": "../A-Streamer/pf/thesketchreal.png",
-        "Stream": ""
+        "Stream": "../streams/thesketchreal1.mp4"
     },
     {
         "Name": "Pengu",
@@ -45,7 +45,7 @@ const r6_streamer = [
         "Status": false,
         "Liveviewer": 0,
         "Pf": "../A-Streamer/pf/pengu.png",
-        "Stream": ""
+        "Stream": "../streams/pengu1.mp4"
     },
     {
         "Name": "KingGeorge",
@@ -53,6 +53,6 @@ const r6_streamer = [
         "Status": false,
         "Liveviewer": 0,
         "Pf": "../A-Streamer/pf/kinggeorge.jpg",
-        "Stream": ""
+        "Stream": "../streams/kinggeorge1.mp4"
     }
 ];
