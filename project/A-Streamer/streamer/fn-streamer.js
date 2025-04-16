@@ -5,7 +5,7 @@ const fn_streamer = [
         "Status": false,
         "Liveviewer": 0,
         "Pf": "../A-Streamer/pf/kaicenat.jpeg",
-        "Stream": ""
+        "Stream": "../streams/kaicenat1.mp4"
     },
     {
         "Name": "Tfue",
@@ -13,7 +13,7 @@ const fn_streamer = [
         "Status": false,
         "Liveviewer": 0,
         "Pf": "../A-Streamer/pf/tfue.jng",
-        "Stream": ""
+        "Stream": "../streams/tfue1.mp4"
     },
     {
         "Name": "Mongraal",
@@ -21,7 +21,7 @@ const fn_streamer = [
         "Status": false,
         "Liveviewer": 0,
         "Pf": "../A-Streamer/pf/mongraal.jpeg",
-        "Stream": ""
+        "Stream": "../streams/mongraal1.mp4"
     },
     {
         "Name": "Ninja",
