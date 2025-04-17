@@ -93,6 +93,6 @@ const fn_streamer = [
         "Status": false,
         "Liveviewer": 0,
         "Pf": "../A-Streamer/pf/ohnepixel.webp",
-        "Stream": ""
+        "Stream": "../streams/ohnepixel1.mp4"
     }
 ];
