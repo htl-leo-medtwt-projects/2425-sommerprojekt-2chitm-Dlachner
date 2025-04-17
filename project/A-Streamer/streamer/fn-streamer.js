@@ -45,7 +45,7 @@ const fn_streamer = [
         "Status": false,
         "Liveviewer": 0,
         "Pf": "../A-Streamer/pf/mrsavage.png",
-        "Stream": ""
+        "Stream": "../streams/mrsavage1.mp4"
     },
     {
         "Name": "Trymacs",
@@ -53,7 +53,7 @@ const fn_streamer = [
         "Status": false,
         "Liveviewer": 0,
         "Pf": "../A-Streamer/pf/trymacs.png",
-        "Stream": ""
+        "Stream": "../streams/trymacs1.mp4"
     },
     {
         "Name": "StandartSkill",
