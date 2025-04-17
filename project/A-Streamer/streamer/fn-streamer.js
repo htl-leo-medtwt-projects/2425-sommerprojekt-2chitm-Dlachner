@@ -29,7 +29,7 @@ const fn_streamer = [
         "Status": false,
         "Liveviewer": 0,
         "Pf": "../A-Streamer/pf/ninja.jpg",
-        "Stream": ""
+        "Stream": "../streams/ninja1.mp4"
     },
     {
         "Name": "Bugha",
@@ -37,7 +37,7 @@ const fn_streamer = [
         "Status": false,
         "Liveviewer": 0,
         "Pf": "../A-Streamer/pf/bugha.jpeg",
-        "Stream": ""
+        "Stream": "../streams/bugha1.mp4"
     },
     {
         "Name": "MrSavage",
