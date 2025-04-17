@@ -77,7 +77,7 @@ const fn_streamer = [
         "Status": false,
         "Liveviewer": 0,
         "Pf": "../A-Streamer/pf/nickeh30.png",
-        "Stream": ""
+        "Stream": "../streams/nickeh301.mp4"
     },
     {
         "Name": "Clix",
@@ -85,7 +85,7 @@ const fn_streamer = [
         "Status": false,
         "Liveviewer": 0,
         "Pf": "../A-Streamer/pf/clix.png",
-        "Stream": ""
+        "Stream": "../streams/clix1.mp4"
     },
     {
         "Name": "ohnePixel",
