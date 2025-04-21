@@ -130,15 +130,20 @@ nav a.active {
 .category-container {
     display: flex;
     gap: 2vw;
+    justify-content: center;
+    align-items: center;
 }
 
 .category-img {
-    flex: 1;
-    aspect-ratio: 16 / 9;
+    width: 10vw;
+    height: calc(10vw * 1.33);
     background: var(--colorForBoxes);
     border-radius: 10px;
-    background-size: cover;
+    background-size: contain;
+    background-repeat: no-repeat;
     background-position: center;
+    box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    cursor: pointer;
 }
 
 .profile-pic {

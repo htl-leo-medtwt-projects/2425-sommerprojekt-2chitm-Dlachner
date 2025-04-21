@@ -54,8 +54,8 @@ function loadPage() {
             <section class="section">
                 <h2>Categories</h2>
                 <div class="category-container">
-                    <div class="category-img"></div>
-                    <div class="category-img"></div>
+                    <div class="category-img" style="background-image: url('../Z-extra/pics/fortnite/category.jpg');"></div>
+                    <div class="category-img" style="background-image: url('../Z-extra/pics/r6/category.jpg');"></div>
                 </div>
             </section>
         </main>
