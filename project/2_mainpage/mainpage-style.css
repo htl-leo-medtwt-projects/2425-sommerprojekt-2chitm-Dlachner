@@ -117,14 +117,60 @@ nav a.active {
 
 .stream-box {
     background: var(--colorForBoxes);
-    flex: 1;
-    aspect-ratio: 16 / 9;
     border-radius: 10px;
+    overflow: hidden;
+    width: 100%;
+    max-width: 30vw;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
+    flex-direction: column;
+    cursor: pointer;
+    transition: transform 0.2s;
 }
+
+.stream-box:hover {
+    transform: translateY(-5px);
+}
+
+.preview-img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background-size: cover;
+    background-position: center;
+}
+
+.stream-info {
+    display: flex;
+    padding: 1vh 1vw;
+    align-items: center;
+    gap: 1vw;
+}
+
+.stream-profile {
+    width: 5vh;
+    height: 5vh;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid #ccc;
+}
+
+.stream-texts {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.stream-title {
+    font-size: 2.2vh;
+    font-weight: bold;
+    color: #000;
+}
+
+.stream-name {
+    font-size: 1.8vh;
+    color: #888;
+}
+
 
 /* Categories */
 .category-container {

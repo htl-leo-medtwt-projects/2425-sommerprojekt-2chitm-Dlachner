@@ -34,9 +34,7 @@ function loadPage() {
             <section class="section">
                 <h2>For you</h2>
                 <div class="stream-container">
-                    <div class="stream-box">Stream 1</div>
-                    <div class="stream-box">Stream 2</div>
-                    <div class="stream-box">Stream 3</div>
+                    ${renderStreamerBoxes(fn_streamer.slice(0, 3))}
                 </div>
             </section>
 
@@ -44,9 +42,7 @@ function loadPage() {
             <section class="section">
                 <h2>You might also like:</h2>
                 <div class="stream-container">
-                    <div class="stream-box">Suggestion 1</div>
-                    <div class="stream-box">Suggestion 2</div>
-                    <div class="stream-box">Suggestion 3</div>
+                    ${renderStreamerBoxes(r6_streamer.slice(0, 3))}
                 </div>
             </section>
 
@@ -64,6 +60,26 @@ function loadPage() {
 }
 loadPage();
 
+/*******************************************************
+ * 
+ *                 Streams & Streamer
+ * 
+ *******************************************************/
+
+function renderStreamerBoxes(streamerList) {
+    return streamerList.map(s => `
+        <div class="stream-box">
+            <div class="preview-img" style="background-image: url('${s.Stream}')"></div>
+            <div class="stream-info">
+                <img src="${s.Pf}" alt="${s.Name}" class="stream-profile">
+                <div class="stream-texts">
+                    <div class="stream-title">${s.Titel || "Cooler Stream"}</div>
+                    <div class="stream-name">@${s.Name}</div>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
 
 /*******************************************************
  * 
