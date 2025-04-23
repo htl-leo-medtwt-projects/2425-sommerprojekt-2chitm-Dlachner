@@ -69,17 +69,40 @@ loadPage();
 function renderStreamerBoxes(streamerList) {
     return streamerList.map(s => `
         <div class="stream-box">
-            <div class="preview-img" style="background-image: url('${s.Stream}')"></div>
+            <div class="preview-wrapper">
+                <img src="${s.Thumbnail}" alt="Thumbnail" class="preview-img">
+                <video src="${s.Stream}" class="preview-video" muted loop></video>
+            </div>
             <div class="stream-info">
                 <img src="${s.Pf}" alt="${s.Name}" class="stream-profile">
                 <div class="stream-texts">
-                    <div class="stream-title">${s.Titel || "Cooler Stream"}</div>
+                    <div class="stream-title">${s.Streamtitle}</div>
                     <div class="stream-name">@${s.Name}</div>
                 </div>
             </div>
         </div>
     `).join('');
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    setTimeout(() => {
+        const videoBoxes = document.querySelectorAll(".preview-wrapper");
+
+        videoBoxes.forEach(wrapper => {
+            const video = wrapper.querySelector("video");
+
+            wrapper.addEventListener("mouseenter", () => {
+                video.currentTime = 0;
+                video.play();
+            });
+
+            wrapper.addEventListener("mouseleave", () => {
+                video.pause();
+                video.currentTime = 0;
+            });
+        });
+    }, 100);
+});
 
 /*******************************************************
  * 
