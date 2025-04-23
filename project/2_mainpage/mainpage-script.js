@@ -68,7 +68,7 @@ loadPage();
 
 function renderStreamerBoxes(streamerList) {
     return streamerList.map(s => `
-        <div class="stream-box">
+        <div class="stream-box" onclick="loadStreamFullscreen('${s.Stream}', '${s.Name}', '${s.Titel || "Cooler Stream"}', '${s.Pf}')">
             <div class="preview-wrapper">
                 <img src="${s.Thumbnail}" alt="Thumbnail" class="preview-img">
                 <video src="${s.Stream}" class="preview-video" muted loop></video>
@@ -82,6 +82,72 @@ function renderStreamerBoxes(streamerList) {
             </div>
         </div>
     `).join('');
+}
+
+//Stream öffnen
+function loadStreamFullscreen(videoUrl, streamerName, streamTitle, profilePic) {
+    content.innerHTML = `
+        <div class="fullscreen-container">
+            <!-- Header -->
+            <header class="fullscreen-header">
+                <div id="frog-back" class="logo">🐸 Froggo</div>
+                <div class="chat-header">Chat</div>
+            </header>
+
+            <div class="stream-chat-wrapper">
+                <!-- Stream Video -->
+                <div class="stream-full">
+                    <video src="${videoUrl}" autoplay controls muted class="stream-video"></video>
+
+                    <div class="stream-info-bar">
+                        <img src="${profilePic}" class="stream-profile-icon">
+                        <div class="streamer-info-text">
+                            <h3>${streamTitle}</h3>
+                            <p>@${streamerName} || Rainbow Six Siege</p>
+                        </div>
+                        <div class="stream-meta">
+                            🔴 <span>20k viewers</span>
+                            <button id="follow-btn" class="unfollow-btn"></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat -->
+                <div class="chat-box">
+                    <div class="chat-messages" id="chat-messages">
+                        <p><span class="user">randomDude:</span> this map is massive</p>
+                        <p><span class="user">papaplatte:</span> imagine</p>
+                        <p><span class="user">mike:</span> what's up chat!!!</p>
+                    </div>
+                    <div class="chat-input">
+                        <input type="text" id="chat-input-field" placeholder="Type message">
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    document.getElementById("frog-back").addEventListener("click", loadPage);
+
+    // Follow/Unfollow Button initialisieren
+    const btn = document.getElementById("follow-btn");
+    function updateBtn() {
+      if (AccountManager.isFollowing(streamerName)) {
+        btn.textContent = "Unfollow";
+      } else {
+        btn.textContent = "Follow";
+      }
+    }
+    updateBtn();
+
+    btn.addEventListener("click", () => {
+      if (AccountManager.isFollowing(streamerName)) {
+        AccountManager.unfollowStreamer(streamerName);
+      } else {
+        AccountManager.followStreamer(streamerName);
+      }
+      updateBtn();
+    });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -276,6 +342,13 @@ const AccountManager = {
             user.followers.push(streamerName);
             this.saveCurrentUser(user);
         }
+    },
+
+    unfollowStreamer: function (streamerName) {
+        let user = this.getCurrentUser();
+        if (!user.followers) return;
+        user.followers = user.followers.filter(name => name !== streamerName);
+        this.saveCurrentUser(user);
     },
 
     isFollowing: function (streamerName) {
