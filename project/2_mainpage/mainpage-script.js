@@ -7,7 +7,7 @@ let content = document.getElementById('content');
 
 function loadPage() {
     content.innerHTML = `
-            <!-- Sidebar -->
+        <!-- Sidebar -->
         <aside class="sidebar">
             <div class="logo">🐸 Froggo</div>
             <nav>
@@ -50,16 +50,169 @@ function loadPage() {
             <section class="section">
                 <h2>Categories</h2>
                 <div class="category-container">
-                    <div class="category-img" style="background-image: url('../Z-extra/pics/fortnite/category.jpg');"></div>
-                    <div class="category-img" style="background-image: url('../Z-extra/pics/r6/category.jpg');"></div>
+                    <div id="fortnite" class="category-img" style="background-image: url('../Z-extra/pics/fortnite/category.jpg');"></div>
+                    <div id="r6" class="category-img" style="background-image: url('../Z-extra/pics/r6/category.jpg');"></div>
                 </div>
             </section>
         </main>
-    `
-    document.querySelector('.profile-icon').addEventListener('click', loadSettingsPage);
-    updateStreamerBoxes()
+    `;
+
+    document.getElementById("fortnite").addEventListener("click", loadFortniteCategoryPage);
+    document.getElementById("r6").addEventListener("click", loadR6CategoryPage);
+
+    updateStreamerBoxes();
 }
 loadPage();
+
+/*******************************************************
+ * 
+ *                 Fortnite Kategorie
+ * 
+ *******************************************************/
+function loadFortniteCategoryPage() {
+    content.innerHTML = `
+        <!-- Sidebar bleibt erhalten -->
+        <aside class="sidebar">
+            <div class="logo" id="frog-back">🐸 Froggo</div>
+            <nav>
+                <a href="#" class="active">Following</a>
+            </nav>
+            <div class="live-section">
+                <h3>Live</h3>
+            </div>
+            <div class="offline-section">
+                <h3>Offline</h3>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="content">
+            <header class="top-bar">
+                <input type="text" placeholder="Search" class="search-bar">
+                <div onclick="loadSettingsPage()" class="profile-icon" title="${currentUser.username}">
+                    <img src="../Z-extra/pics/profilePic/${currentUser.pp}" alt="Profile Picture" class="profile-pic">
+                </div>
+            </header>
+
+            <!-- Fortnite Kategorie -->
+            <section class="fortnite-category">
+                <div class="category-header">
+                    <img src="../Z-extra/pics/fortnite/category.jpg" alt="Fortnite" class="category-image">
+                    <div class="category-info">
+                        <h2>Fortnite</h2>
+                        <p>Fortnite is the completely free online game where you and your friends fight to be the last one standing in Battle Royale, join forces to make your own Creative games, or catch a live show at Party Royale.</p>
+                        <p><strong>Think you know everything about Fortnite? Put your knowledge to the test with our ultimate quiz!</strong></p>
+                    </div>
+                </div>
+                <div class="stream-container">
+                    ${renderFortniteStreamers()}
+                </div>
+            </section>
+        </main>
+    `;
+
+    // Event-Listener für das Frosch-Logo
+    document.getElementById("frog-back").addEventListener("click", () => {
+        loadPage();
+    });
+    updateStreamerBoxes();
+}
+
+function renderFortniteStreamers() {
+    return fn_streamer
+        .filter(streamer => streamer.Status) // Nur Streamer, die live sind
+        .map(streamer => `
+            <div class="stream-box" onclick="loadStreamFullscreen('${streamer.Stream}', '${streamer.Name}', '${streamer.Streamtitle}', '${streamer.Pf}')">
+                <div class="preview-wrapper">
+                    <img src="${streamer.Thumbnail}" alt="Thumbnail" class="preview-img">
+                    <video src="${streamer.Stream}" class="preview-video" muted loop></video>
+                </div>
+                <div class="stream-info">
+                    <img src="${streamer.Pf}" alt="${streamer.Name}" class="stream-profile">
+                    <div class="stream-texts">
+                        <div class="stream-title">${streamer.Streamtitle}</div>
+                        <div class="stream-name">@${streamer.Name}</div>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+}
+
+/*******************************************************
+ * 
+ *                 R6 Kategorie
+ * 
+ *******************************************************/
+function loadR6CategoryPage() {
+    content.innerHTML = `
+        <!-- Sidebar bleibt erhalten -->
+        <aside class="sidebar">
+            <div class="logo" id="frog-back">🐸 Froggo</div>
+            <nav>
+                <a href="#" class="active">Following</a>
+            </nav>
+            <div class="live-section">
+                <h3>Live</h3>
+            </div>
+            <div class="offline-section">
+                <h3>Offline</h3>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="content">
+            <header class="top-bar">
+                <input type="text" placeholder="Search" class="search-bar">
+                <div onclick="loadSettingsPage()" class="profile-icon" title="${currentUser.username}">
+                    <img src="../Z-extra/pics/profilePic/${currentUser.pp}" alt="Profile Picture" class="profile-pic">
+                </div>
+            </header>
+
+            <!-- R6 Kategorie -->
+            <section class="r6-category">
+                <div class="category-header">
+                    <img src="../Z-extra/pics/r6/category.jpg" alt="Rainbow Six Siege" class="category-image">
+                    <div class="category-info">
+                        <h2>Rainbow Six Siege</h2>
+                        <p>Inspired by real counter-terrorist operations, Rainbow Six Siege delivers intense combat, tactical gameplay, and high-stakes teamwork.</p>
+                        <p><strong>How well do you know Rainbow Six Siege? Test your tactical knowledge with our ultimate quiz!</strong></p>
+                    </div>
+                </div>
+                <div class="stream-container">
+                    ${renderR6Streamers()}
+                </div>
+            </section>
+        </main>
+    `;
+
+    // Event-Listener für das Frosch-Logo
+    document.getElementById("frog-back").addEventListener("click", () => {
+        loadPage();
+    });
+
+    // Aktualisiere die Sidebar
+    updateStreamerBoxes();
+}
+
+function renderR6Streamers() {
+    return r6_streamer
+        .filter(streamer => streamer.Status) // Nur Streamer, die live sind
+        .map(streamer => `
+            <div class="stream-box" onclick="loadStreamFullscreen('${streamer.Stream}', '${streamer.Name}', '${streamer.Streamtitle}', '${streamer.Pf}')">
+                <div class="preview-wrapper">
+                    <img src="${streamer.Thumbnail}" alt="Thumbnail" class="preview-img">
+                    <video src="${streamer.Stream}" class="preview-video" muted loop></video>
+                </div>
+                <div class="stream-info">
+                    <img src="${streamer.Pf}" alt="${streamer.Name}" class="stream-profile">
+                    <div class="stream-texts">
+                        <div class="stream-title">${streamer.Streamtitle}</div>
+                        <div class="stream-name">@${streamer.Name}</div>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+}
 
 /*******************************************************
  * 
@@ -253,7 +406,7 @@ function updateStreamerBoxes() {
     const followedStreamers = currentUser.followers || [];
 
     // Füge nur die Streamer hinzu, denen der Benutzer folgt
-    fn_streamer.forEach(streamer => {
+    [...fn_streamer, ...r6_streamer].forEach(streamer => {
         if (!followedStreamers.includes(streamer.Name)) return;
 
         const streamerBox = document.createElement('div');
@@ -293,12 +446,30 @@ function updateStreamerStatus() {
             }
         }
     });
+
+    r6_streamer.forEach(streamer => {
+        if (streamer.Status) {
+            // Wenn der Streamer live ist, hat er eine 50% Chance offline zu gehen
+            if (Math.random() < 0.5) {
+                streamer.Status = false;
+            }
+        } else {
+            // Wenn der Streamer offline ist, hat er eine 30% Chance live zu gehen
+            if (Math.random() < 0.3) {
+                streamer.Status = true;
+            }
+        }
+    });
     updateStreamerBoxes();
 }
 
 document.addEventListener("DOMContentLoaded", () => {
     // Setze den Status der Streamer beim Laden der Seite
     fn_streamer.forEach(streamer => {
+        streamer.Status = Math.random() < 0.3; // 30% Chance, live zu sein
+    });
+
+    r6_streamer.forEach(streamer => {
         streamer.Status = Math.random() < 0.3; // 30% Chance, live zu sein
     });
 

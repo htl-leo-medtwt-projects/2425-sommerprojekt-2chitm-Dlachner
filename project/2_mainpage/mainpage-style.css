@@ -497,3 +497,51 @@ nav a.active {
     font-weight: bold;
     color: green;
 }
+
+
+
+
+/* Fortnite Kategorie */
+.fortnite-category {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.category-header {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    background-color: var(--colorForBoxes);
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.category-image {
+    width: 15rem;
+    height: auto;
+    border-radius: 1rem;
+    object-fit: cover;
+}
+
+.category-info {
+    flex: 1;
+}
+
+.category-info h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.category-info p {
+    font-size: 1.2rem;
+    line-height: 1.5;
+}
+
+.stream-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 Spalten */
+    gap: 2vw; /* Abstand zwischen den Streams */
+    justify-items: center; /* Zentriert die Streams horizontal */
+}
