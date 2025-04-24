@@ -57,6 +57,7 @@ function loadPage() {
         </main>
     `
     document.querySelector('.profile-icon').addEventListener('click', loadSettingsPage);
+    updateStreamerBoxes()
 }
 loadPage();
 
@@ -85,6 +86,8 @@ function renderStreamerBoxes(streamerList) {
 }
 
 //Stream öffnen
+let chatMessageInterval; // Globale Variable für den Timer
+
 function loadStreamFullscreen(videoUrl, streamerName, streamTitle, profilePic) {
     content.innerHTML = `
         <div class="fullscreen-container">
@@ -123,30 +126,35 @@ function loadStreamFullscreen(videoUrl, streamerName, streamTitle, profilePic) {
         </div>
     `;
 
-    document.getElementById("frog-back").addEventListener("click", loadPage);
+    // Zurück zur Hauptseite
+    document.getElementById("frog-back").addEventListener("click", () => {
+        clearInterval(chatMessageInterval); // Stoppe den Timer
+        loadPage();
+        updateStreamerBoxes();
+    });
 
     // Follow/Unfollow Button initialisieren
     const btn = document.getElementById("follow-btn");
     function updateBtn() {
-      if (AccountManager.isFollowing(streamerName)) {
-        btn.textContent = "Unfollow";
-      } else {
-        btn.textContent = "Follow";
-      }
+        if (AccountManager.isFollowing(streamerName)) {
+            btn.textContent = "Unfollow";
+        } else {
+            btn.textContent = "Follow";
+        }
     }
     updateBtn();
 
     btn.addEventListener("click", () => {
-      if (AccountManager.isFollowing(streamerName)) {
-        AccountManager.unfollowStreamer(streamerName);
-      } else {
-        AccountManager.followStreamer(streamerName);
-      }
-      updateBtn();
+        if (AccountManager.isFollowing(streamerName)) {
+            AccountManager.unfollowStreamer(streamerName);
+        } else {
+            AccountManager.followStreamer(streamerName);
+        }
+        updateBtn();
     });
 
-    //Chat
-    setInterval(() => {
+    // Chat-Nachrichten-Timer starten
+    chatMessageInterval = setInterval(() => {
         if (Math.random() < 0.25) { // 1 in 4 chance
             const randomUsername = usernames[Math.floor(Math.random() * usernames.length)];
             const randomMessage = messages[Math.floor(Math.random() * messages.length)];
@@ -154,16 +162,17 @@ function loadStreamFullscreen(videoUrl, streamerName, streamTitle, profilePic) {
         }
     }, 2000);
 
+    // Chat-Eingabe
     const chatInputField = document.getElementById("chat-input-field");
     chatInputField.addEventListener("keydown", (event) => {
-    if (event.key === "Enter") {
-        const message = chatInputField.value.trim();
-        if (message) {
-            addMessageToChat(currentUser.username, message);
-            chatInputField.value = "";
+        if (event.key === "Enter") {
+            const message = chatInputField.value.trim();
+            if (message) {
+                addMessageToChat(currentUser.username, message);
+                chatInputField.value = "";
+            }
         }
-    }
-});
+    });
 }
 
 const messages = [
@@ -208,7 +217,7 @@ function addMessageToChat(username, message) {
     const newMessage = document.createElement("p");
     newMessage.innerHTML = `<span class="user">${username}:</span> ${message}`;
     chatMessages.appendChild(newMessage);
-    chatMessages.scrollTop = chatMessages.scrollHeight; // Auto-scroll to the latest message
+    chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -229,6 +238,74 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
     }, 100);
+});
+
+//Streamer random live und offline gehen wenn die Seite geladen ist
+function updateStreamerBoxes() {
+    const liveSection = document.querySelector('.live-section');
+    const offlineSection = document.querySelector('.offline-section');
+
+    // Leere die Live- und Offline-Bereiche
+    liveSection.innerHTML = '<h3>Live</h3>';
+    offlineSection.innerHTML = '<h3>Offline</h3>';
+
+    // Hole die Follower des aktuellen Benutzers
+    const followedStreamers = currentUser.followers || [];
+
+    // Füge nur die Streamer hinzu, denen der Benutzer folgt
+    fn_streamer.forEach(streamer => {
+        if (!followedStreamers.includes(streamer.Name)) return;
+
+        const streamerBox = document.createElement('div');
+        streamerBox.className = 'stream-box';
+        streamerBox.innerHTML = `
+            <div class="stream-info">
+                <img src="${streamer.Pf}" alt="${streamer.Name}" class="stream-profile">
+                <div class="stream-texts">
+                    <div class="stream-name">@${streamer.Name}</div>
+                </div>
+            </div>
+        `;
+
+        if (streamer.Status) {
+            streamerBox.addEventListener('click', () => {
+                loadStreamFullscreen(streamer.Stream, streamer.Name, streamer.Streamtitle || "Cooler Stream", streamer.Pf);
+            });
+            liveSection.appendChild(streamerBox);
+        } else {
+            offlineSection.appendChild(streamerBox);
+        }
+    });
+}
+
+// Funktion zum Aktualisieren des Streamer-Status
+function updateStreamerStatus() {
+    fn_streamer.forEach(streamer => {
+        if (streamer.Status) {
+            // Wenn der Streamer live ist, hat er eine 50% Chance offline zu gehen
+            if (Math.random() < 0.5) {
+                streamer.Status = false;
+            }
+        } else {
+            // Wenn der Streamer offline ist, hat er eine 30% Chance live zu gehen
+            if (Math.random() < 0.3) {
+                streamer.Status = true;
+            }
+        }
+    });
+    updateStreamerBoxes();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    // Setze den Status der Streamer beim Laden der Seite
+    fn_streamer.forEach(streamer => {
+        streamer.Status = Math.random() < 0.3; // 30% Chance, live zu sein
+    });
+
+    updateStreamerBoxes();
+
+    // Starte den Intervall, um den Status alle 2 Minuten zu aktualisieren
+    setInterval(updateStreamerStatus, 2 * 60 * 1000); // 2 Minuten
 });
 
 /*******************************************************
