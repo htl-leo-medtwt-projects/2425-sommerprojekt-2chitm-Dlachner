@@ -68,7 +68,7 @@ loadPage();
 
 function renderStreamerBoxes(streamerList) {
     return streamerList.map(s => `
-        <div class="stream-box" onclick="loadStreamFullscreen('${s.Stream}', '${s.Name}', '${s.Titel || "Cooler Stream"}', '${s.Pf}')">
+        <div class="stream-box" onclick="loadStreamFullscreen('${s.Stream}', '${s.Name}', '${s.Streamtitle || "Cooler Stream"}', '${s.Pf}')">
             <div class="preview-wrapper">
                 <img src="${s.Thumbnail}" alt="Thumbnail" class="preview-img">
                 <video src="${s.Stream}" class="preview-video" muted loop></video>
@@ -114,11 +114,7 @@ function loadStreamFullscreen(videoUrl, streamerName, streamTitle, profilePic) {
 
                 <!-- Chat -->
                 <div class="chat-box">
-                    <div class="chat-messages" id="chat-messages">
-                        <p><span class="user">randomDude:</span> this map is massive</p>
-                        <p><span class="user">papaplatte:</span> imagine</p>
-                        <p><span class="user">mike:</span> what's up chat!!!</p>
-                    </div>
+                    <div class="chat-messages" id="chat-messages"></div>
                     <div class="chat-input">
                         <input type="text" id="chat-input-field" placeholder="Type message">
                     </div>
@@ -148,6 +144,71 @@ function loadStreamFullscreen(videoUrl, streamerName, streamTitle, profilePic) {
       }
       updateBtn();
     });
+
+    //Chat
+    setInterval(() => {
+        if (Math.random() < 0.25) { // 1 in 4 chance
+            const randomUsername = usernames[Math.floor(Math.random() * usernames.length)];
+            const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+            addMessageToChat(randomUsername, randomMessage);
+        }
+    }, 2000);
+
+    const chatInputField = document.getElementById("chat-input-field");
+    chatInputField.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+        const message = chatInputField.value.trim();
+        if (message) {
+            addMessageToChat(currentUser.username, message);
+            chatInputField.value = "";
+        }
+    }
+});
+}
+
+const messages = [
+    "This is so cool!",
+    "Wow, amazing play!",
+    "Anyone else watching this?",
+    "What a clutch!",
+    "GG everyone!",
+    "This streamer is awesome!",
+    "Can't believe that just happened!",
+    "Who's your favorite streamer?",
+    "This map is insane!",
+    "Let's gooo!",
+    "Thats massive!",
+    "Imagine",
+    "1",
+    "Thats crazy",
+    "Dude what?",
+    "Whats going on",
+    "WHATS UP CHATTTTTT"
+];
+
+const usernames = [
+    "CoolFrog123",
+    "GamerPro",
+    "StreamLover",
+    "ChatMaster",
+    "EpicViewer",
+    "FrogFan",
+    "RainbowSixFan",
+    "ClutchKing",
+    "Viewer123",
+    "StreamerFanatic",
+    "Gamemaster",
+    "Fortnitekid123",
+    "WhatAmIDoing_42",
+    "Roland"
+];
+
+function addMessageToChat(username, message) {
+    const chatMessages = document.getElementById("chat-messages");
+    const newMessage = document.createElement("p");
+    newMessage.innerHTML = `<span class="user">${username}:</span> ${message}`;
+    chatMessages.appendChild(newMessage);
+    chatMessages.scrollTop = chatMessages.scrollHeight; // Auto-scroll to the latest message
 }
 
 document.addEventListener("DOMContentLoaded", () => {
