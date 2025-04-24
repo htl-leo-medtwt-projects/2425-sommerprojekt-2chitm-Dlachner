@@ -498,10 +498,6 @@ nav a.active {
     color: green;
 }
 
-
-
-
-/* Fortnite Kategorie */
 .fortnite-category {
     display: flex;
     flex-direction: column;
@@ -541,7 +537,7 @@ nav a.active {
 
 .stream-container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 Spalten */
-    gap: 2vw; /* Abstand zwischen den Streams */
-    justify-items: center; /* Zentriert die Streams horizontal */
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2vw;
+    justify-items: center;
 }
