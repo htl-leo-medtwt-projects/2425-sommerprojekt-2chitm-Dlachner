@@ -60,6 +60,7 @@ function loadPage() {
     document.getElementById("fortnite").addEventListener("click", loadFortniteCategoryPage);
     document.getElementById("r6").addEventListener("click", loadR6CategoryPage);
 
+    currentUser = JSON.parse(localStorage.getItem('loggedInUser'));
     updateStreamerBoxes();
 }
 loadPage();
