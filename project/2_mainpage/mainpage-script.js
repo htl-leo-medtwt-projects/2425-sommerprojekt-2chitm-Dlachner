@@ -6,6 +6,8 @@ if (!currentUser) {
 let content = document.getElementById('content');
 
 function loadPage() {
+    currentUser = JSON.parse(localStorage.getItem('loggedInUser'));
+
     content.innerHTML = `
         <!-- Sidebar -->
         <aside class="sidebar">
@@ -25,7 +27,7 @@ function loadPage() {
         <main class="content">
             <header class="top-bar">
                 <input type="text" placeholder="Search" class="search-bar">
-                <div class="profile-icon" title="${currentUser.username}">
+                <div onclick="loadSettingsPage()" class="profile-icon" title="${currentUser.username}">
                     <img src="../Z-extra/pics/profilePic/${currentUser.pp}" alt="Profile Picture" class="profile-pic">
                 </div>
             </header>
@@ -33,16 +35,16 @@ function loadPage() {
             <!-- For You Section -->
             <section class="section">
                 <h2>For you</h2>
-                <div class="stream-container">
-                    ${renderStreamerBoxes(fn_streamer.slice(0, 3))}
+                <div class="owl-carousel foryou-carousel">
+                    ${renderStreamerBoxes(fn_streamer.concat(fn_streamer).concat(fn_streamer))}
                 </div>
             </section>
 
             <!-- You Might Also Like -->
             <section class="section">
                 <h2>You might also like:</h2>
-                <div class="stream-container">
-                    ${renderStreamerBoxes(r6_streamer.slice(0, 3))}
+                <div class="owl-carousel mightlike-carousel">
+                    ${renderStreamerBoxes(r6_streamer.concat(r6_streamer).concat(r6_streamer))}
                 </div>
             </section>
 
@@ -60,9 +62,36 @@ function loadPage() {
     document.getElementById("fortnite").addEventListener("click", loadFortniteCategoryPage);
     document.getElementById("r6").addEventListener("click", loadR6CategoryPage);
 
-    currentUser = JSON.parse(localStorage.getItem('loggedInUser'));
     updateStreamerBoxes();
+
+    // Owl Carousel Initialisierung
+    $(document).ready(function () {
+        $('.foryou-carousel').owlCarousel({
+            loop: true,
+            margin: 15,
+            nav: true,
+            dots: false,
+            responsive: {
+                0: { items: 1 },
+                600: { items: 2 },
+                1000: { items: 3 }
+            }
+        });
+
+        $('.mightlike-carousel').owlCarousel({
+            loop: true,
+            margin: 15,
+            nav: true,
+            dots: false,
+            responsive: {
+                0: { items: 1 },
+                600: { items: 2 },
+                1000: { items: 3 }
+            }
+        });
+    });
 }
+
 loadPage();
 
 /*******************************************************
@@ -223,7 +252,7 @@ function renderR6Streamers() {
 
 function renderStreamerBoxes(streamerList) {
     return streamerList.map(s => `
-        <div class="stream-box" onclick="loadStreamFullscreen('${s.Stream}', '${s.Name}', '${s.Streamtitle || "Cooler Stream"}', '${s.Pf}')">
+        <div class="item stream-box" onclick="loadStreamFullscreen('${s.Stream}', '${s.Name}', '${s.Streamtitle || "Cooler Stream"}', '${s.Pf}')">
             <div class="preview-wrapper">
                 <img src="${s.Thumbnail}" alt="Thumbnail" class="preview-img">
                 <video src="${s.Stream}" class="preview-video" muted loop></video>
@@ -238,6 +267,7 @@ function renderStreamerBoxes(streamerList) {
         </div>
     `).join('');
 }
+
 
 //Stream öffnen
 let chatMessageInterval; // Globale Variable für den Timer
@@ -488,7 +518,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function loadSettingsPage() {
     content.innerHTML = `
         <header class="top-bar settings-header">
-            <div class="logo">🐸 Froggo</div>
+            <div onclick="loadPage()" class="logo">🐸 Froggo</div>
         </header>
 
         <main class="settings-main">
@@ -522,7 +552,7 @@ function loadSettingsPage() {
                     </label>
 
                     <button onclick="saveSettings()">✅ Änderungen speichern</button>
-                    <button onclick="goBackToMain()">🔙 Zurück</button>
+                    <button onclick="loadPage()">🔙 Zurück</button>
 
                     <div id="save-confirmation" style="display: none; margin-top: 2vh; color: green; font-weight: bold;">✅ Änderungen gespeichert!</div>
                 </div>
@@ -600,12 +630,6 @@ function changeProfilePicture() {
         alert("Ungültige Auswahl.");
     }
 }
-
-function goBackToMain() {
-    loadPage();
-}
-
-
 
 /*******************************************************
  * 
