@@ -132,6 +132,10 @@ function loadFortniteCategoryPage() {
                         <h2>Fortnite</h2>
                         <p>Fortnite is the completely free online game where you and your friends fight to be the last one standing in Battle Royale, join forces to make your own Creative games, or catch a live show at Party Royale.</p>
                         <p><strong>Think you know everything about Fortnite? Put your knowledge to the test with our ultimate quiz!</strong></p>
+                        
+                        <div class="quiz-wrapper">
+                            <button class="quiz-button" onclick="loadQuizPageFn()">Quiz</button>
+                        </div>
                     </div>
                 </div>
                 <div class="stream-container">
@@ -145,6 +149,7 @@ function loadFortniteCategoryPage() {
     document.getElementById("frog-back").addEventListener("click", () => {
         loadPage();
     });
+
     updateStreamerBoxes();
 }
 
@@ -206,6 +211,10 @@ function loadR6CategoryPage() {
                         <h2>Rainbow Six Siege</h2>
                         <p>Inspired by real counter-terrorist operations, Rainbow Six Siege delivers intense combat, tactical gameplay, and high-stakes teamwork.</p>
                         <p><strong>How well do you know Rainbow Six Siege? Test your tactical knowledge with our ultimate quiz!</strong></p>
+
+                        <div class="quiz-wrapper">
+                            <button class="quiz-button" onclick="loadQuizPageR6()">Quiz</button>
+                        </div>
                     </div>
                 </div>
                 <div class="stream-container">
@@ -509,6 +518,35 @@ document.addEventListener("DOMContentLoaded", () => {
     // Starte den Intervall, um den Status alle 2 Minuten zu aktualisieren
     setInterval(updateStreamerStatus, 2 * 60 * 1000); // 2 Minuten
 });
+
+/*******************************************************
+ * 
+ *                       Quiz
+ * 
+ *******************************************************/
+function loadQuizPageFn() {
+    content.innerHTML = `
+        <div class="quizfn-background">
+            <div class="quiz-center">
+                <img src="../Z-extra/pics/fortnite/Fortnite.png" alt="Fortnite Logo" class="quiz-logo">
+                <button class="button" id="play"><span id="readyb">Ready</span></button>
+                <button class="back-btn" onclick="loadPage()">Zurück</button>
+            </div>
+        </div>
+    `;
+}
+
+function loadQuizPageR6() {
+    content.innerHTML = `
+        <div class="quizr6-background">
+            <div class="quiz-center">
+                <img src="../Z-extra/pics/r6/logo.png" alt="R6 Logo" class="quiz-logo">
+                <button class="button" id="play"><span id="readyb">Ready</span></button>
+                <button class="back-btn" onclick="loadPage()">Zurück</button>
+            </div>
+        </div>
+    `;
+}
 
 /*******************************************************
  * 
