@@ -8,6 +8,22 @@ let content = document.getElementById('content');
 function loadPage() {
     currentUser = JSON.parse(localStorage.getItem('loggedInUser'));
 
+    const followed = currentUser.followers || [];
+    const followedFn = fn_streamer.filter(s => followed.includes(s.Name));
+    const followedR6 = r6_streamer.filter(s => followed.includes(s.Name));
+
+    let forYouHtml, mightLikeHtml;
+    if (followedFn.length > followedR6.length) {
+        forYouHtml = renderStreamerBoxes(fn_streamer.filter(s => s.Status));
+        mightLikeHtml = renderStreamerBoxes(r6_streamer.filter(s => s.Status));
+    } else if (followedR6.length > followedFn.length) {
+        forYouHtml = renderStreamerBoxes(r6_streamer.filter(s => s.Status));
+        mightLikeHtml = renderStreamerBoxes(fn_streamer.filter(s => s.Status));
+    } else {
+        forYouHtml = renderStreamerBoxes(fn_streamer.filter(s => s.Status));
+        mightLikeHtml = renderStreamerBoxes(r6_streamer.filter(s => s.Status));
+    }
+
     content.innerHTML = `
         <!-- Sidebar -->
         <aside class="sidebar">
@@ -36,7 +52,7 @@ function loadPage() {
             <section class="section">
                 <h2>For you</h2>
                 <div class="owl-carousel foryou-carousel">
-                    ${renderStreamerBoxes(fn_streamer.concat(fn_streamer).concat(fn_streamer))}
+                    ${forYouHtml}
                 </div>
             </section>
 
@@ -44,7 +60,7 @@ function loadPage() {
             <section class="section">
                 <h2>You might also like:</h2>
                 <div class="owl-carousel mightlike-carousel">
-                    ${renderStreamerBoxes(r6_streamer.concat(r6_streamer).concat(r6_streamer))}
+                    ${mightLikeHtml}
                 </div>
             </section>
 
@@ -293,7 +309,7 @@ function loadStreamFullscreen(videoUrl, streamerName, streamTitle, profilePic) {
             <div class="stream-chat-wrapper">
                 <!-- Stream Video -->
                 <div class="stream-full">
-                    <video src="${videoUrl}" autoplay controls muted class="stream-video"></video>
+                    <video id="stream-video" src="${videoUrl}" autoplay controls muted class="stream-video"></video>
 
                     <div class="stream-info-bar">
                         <img src="${profilePic}" class="stream-profile-icon">
@@ -318,6 +334,21 @@ function loadStreamFullscreen(videoUrl, streamerName, streamTitle, profilePic) {
             </div>
         </div>
     `;
+
+    const video = document.getElementById("stream-video");
+    let lastTime = 0;
+    video.addEventListener("timeupdate", function () {
+        if (video.currentTime > lastTime + 0.5) {
+            video.currentTime = lastTime;
+        } else {
+            lastTime = video.currentTime;
+        }
+    });
+    video.addEventListener("seeking", function () {
+        if (video.currentTime > lastTime + 0.5) {
+            video.currentTime = lastTime;
+        }
+    });
 
     document.getElementById("frog-back").addEventListener("click", () => {
         clearInterval(chatMessageInterval);
@@ -552,17 +583,16 @@ function updateStreamerStatus() {
 document.addEventListener("DOMContentLoaded", () => {
     // Setze den Status der Streamer beim Laden der Seite
     fn_streamer.forEach(streamer => {
-        streamer.Status = Math.random() < 0.3; // 30% Chance, live zu sein
+        streamer.Status = Math.random() < 0.4;
     });
-
     r6_streamer.forEach(streamer => {
-        streamer.Status = Math.random() < 0.3; // 30% Chance, live zu sein
+        streamer.Status = Math.random() < 0.4;
     });
-
-    updateStreamerBoxes();
 
     // Starte den Intervall, um den Status alle 2 Minuten zu aktualisieren
-    setInterval(updateStreamerStatus, 2 * 60 * 1000); // 2 Minuten
+    setInterval(updateStreamerStatus, 2 * 60 * 1000);
+
+    loadPage();
 });
 
 /*******************************************************
