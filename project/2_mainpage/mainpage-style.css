@@ -574,6 +574,23 @@ nav a.active {
     justify-items: center;
 }
 
+.sub-btn {
+    background: #ffd700;
+    color: #222;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 18px;
+    font-weight: bold;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.sub-btn:disabled {
+    background: #ccc;
+    color: #888;
+    cursor: not-allowed;
+}
+
 /*****************************************
  * Quiz
 *****************************************/

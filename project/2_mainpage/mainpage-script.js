@@ -279,7 +279,7 @@ function renderStreamerBoxes(streamerList) {
 
 
 //Stream öffnen
-let chatMessageInterval; // Globale Variable für den Timer
+let chatMessageInterval;
 
 function loadStreamFullscreen(videoUrl, streamerName, streamTitle, profilePic) {
     content.innerHTML = `
@@ -302,7 +302,7 @@ function loadStreamFullscreen(videoUrl, streamerName, streamTitle, profilePic) {
                             <p>@${streamerName} || Rainbow Six Siege</p>
                         </div>
                         <div class="stream-meta">
-                            🔴 <span>20k viewers</span>
+                            <button id="sub-btn" class="sub-btn"></button>
                             <button id="follow-btn" class="unfollow-btn"></button>
                         </div>
                     </div>
@@ -319,14 +319,12 @@ function loadStreamFullscreen(videoUrl, streamerName, streamTitle, profilePic) {
         </div>
     `;
 
-    // Zurück zur Hauptseite
     document.getElementById("frog-back").addEventListener("click", () => {
-        clearInterval(chatMessageInterval); // Stoppe den Timer
+        clearInterval(chatMessageInterval);
         loadPage();
         updateStreamerBoxes();
     });
 
-    // Follow/Unfollow Button initialisieren
     const btn = document.getElementById("follow-btn");
     function updateBtn() {
         if (AccountManager.isFollowing(streamerName)) {
@@ -346,9 +344,34 @@ function loadStreamFullscreen(videoUrl, streamerName, streamTitle, profilePic) {
         updateBtn();
     });
 
+    const subBtn = document.getElementById("sub-btn");
+    function updateSubBtn() {
+        if (currentUser.subs && currentUser.subs.includes(streamerName)) {
+            subBtn.textContent = "Subscribed";
+            subBtn.disabled = true;
+        } else if (currentUser.points >= 100) {
+            subBtn.textContent = "Sub (100 Punkte)";
+            subBtn.disabled = false;
+        } else {
+            subBtn.textContent = "Sub (100 Punkte)";
+            subBtn.disabled = true;
+        }
+    }
+    updateSubBtn();
+
+    subBtn.addEventListener("click", () => {
+        if (currentUser.points >= 100 && (!currentUser.subs || !currentUser.subs.includes(streamerName))) {
+            if (!currentUser.subs) currentUser.subs = [];
+            currentUser.points -= 100;
+            currentUser.subs.push(streamerName);
+            AccountManager.saveCurrentUser(currentUser);
+            updateSubBtn();
+        }
+    });
+
     // Chat-Nachrichten-Timer starten
     chatMessageInterval = setInterval(() => {
-        if (Math.random() < 0.25) { // 1 in 4 chance
+        if (Math.random() < 0.25) {
             const randomUsername = usernames[Math.floor(Math.random() * usernames.length)];
             const randomMessage = messages[Math.floor(Math.random() * messages.length)];
             addMessageToChat(randomUsername, randomMessage);
@@ -361,7 +384,11 @@ function loadStreamFullscreen(videoUrl, streamerName, streamTitle, profilePic) {
         if (event.key === "Enter") {
             const message = chatInputField.value.trim();
             if (message) {
-                addMessageToChat(currentUser.username, message);
+                let name = currentUser.username;
+                if (currentUser.subs && currentUser.subs.includes(streamerName)) {
+                    name += "🔥";
+                }
+                addMessageToChat(name, message);
                 chatInputField.value = "";
             }
         }
@@ -385,7 +412,15 @@ const messages = [
     "Thats crazy",
     "Dude what?",
     "Whats going on",
-    "WHATS UP CHATTTTTT"
+    "WHATS UP CHATTTTTT",
+    "Sub hype! 🔥",
+    "Best stream ever!",
+    "Love this community!",
+    "Streamer deserves more subs!",
+    "That play was insane!",
+    "Froggo squad unite!",
+    "Can we get some hype in the chat?",
+    "If this website was a schoolproject I'd deffenitely rate it an A!!🐸"
 ];
 
 const usernames = [
@@ -402,7 +437,18 @@ const usernames = [
     "Gamemaster",
     "Fortnitekid123",
     "WhatAmIDoing_42",
-    "Roland"
+    "Roland",
+    "Giganinja🔥",
+    "SubKing🔥",
+    "NightOwl🔥",
+    "VIPFrog🔥",
+    "Legend27🔥",
+    "EpicSub🔥",
+    "ProViewer🔥",
+    "HypeMaster🔥",
+    "FroggoSub🔥",
+    "SiegeSub🔥",
+    "QuizChampion🔥"
 ];
 
 function addMessageToChat(username, message) {
@@ -596,12 +642,16 @@ function checkAnswer(questionIndex, selectedOption, quizType) {
     // Färbe die Buttons entsprechend ein
     buttons.forEach((button, index) => {
         if (index === question.correctAnswer) {
-            button.style.backgroundColor = 'green'; // Richtige Antwort grün
+            button.style.backgroundColor = 'green';
         } else if (index === selectedOption) {
-            button.style.backgroundColor = 'red'; // Falsche Antwort rot
+            button.style.backgroundColor = 'red';
         }
-        button.disabled = true; // Deaktiviere alle Buttons
+        button.disabled = true;
     });
+
+    if (selectedOption === question.correctAnswer) {
+        AccountManager.addPoints(10);
+    }
 
     // Nach 3 Sekunden zur nächsten Frage wechseln
     setTimeout(() => {
@@ -689,6 +739,9 @@ function loadSettingsPage() {
                 <img src="../Z-extra/pics/profilePic/${currentUser.pp}" alt="Profilbild" class="settings-profile-pic" id="profile-pic-preview">
 
                 <h2>${currentUser.username}</h2>
+                <div class="user-points" style="font-size:1.3em; margin-bottom:1em;">
+                    🪙 Punkte: <span id="userPoints">${currentUser.points || 0}</span>
+                </div>
 
                 <div class="settings-options">
                     <label>📝 New name:

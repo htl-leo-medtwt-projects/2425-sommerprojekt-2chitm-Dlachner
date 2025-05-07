@@ -121,7 +121,8 @@ function saveUser() {
         phone,
         pp: "defaultPic.jpg",
         points: 0,
-        followers: []
+        followers: [],
+        subs: []
     };    
 
     users.push(newUser);
