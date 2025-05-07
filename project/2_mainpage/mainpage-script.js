@@ -554,14 +554,14 @@ function loadQuestionFn() {
 
     content.innerHTML = `
         <div class="quizfn-background">
-            <div class="quiz-question">
-                <h2>${question.question}</h2>
-                <div class="quiz-options">
+            <div class="question-container">
+                <h2 class="styled-question">${question.question}</h2>
+                <div class="styled-options">
                     ${question.options.map((option, i) => `
-                        <button onclick="checkAnswer(${randomIndex}, ${i}, 'fn')">${option}</button>
+                        <button class="styled-btn" onclick="checkAnswer(${randomIndex}, ${i}, 'fn')">${option}</button>
                     `).join('')}
                 </div>
-                <button class="back-btn" onclick="loadPage()">Back</button>
+                <button class="back-btn styled-back" onclick="loadPage()">Back</button>
             </div>
         </div>
     `;
@@ -573,14 +573,14 @@ function loadQuestionR6() {
 
     content.innerHTML = `
         <div class="quizr6-background">
-            <div class="quiz-question">
-                <h2>${question.question}</h2>
-                <div class="quiz-options">
+            <div class="question-container">
+                <h2 class="styled-question">${question.question}</h2>
+                <div class="styled-options">
                     ${question.options.map((option, i) => `
-                        <button onclick="checkAnswer(${randomIndex}, ${i}, 'r6')">${option}</button>
+                        <button class="styled-btn" onclick="checkAnswer(${randomIndex}, ${i}, 'r6')">${option}</button>
                     `).join('')}
                 </div>
-                <button class="back-btn" onclick="loadPage()">Back</button>
+                <button class="back-btn styled-back" onclick="loadPage()">Back</button>
             </div>
         </div>
     `;
@@ -590,18 +590,27 @@ function checkAnswer(questionIndex, selectedOption, quizType) {
     const questionArray = quizType === 'fn' ? quizQuestionsFn : quizQuestionsR6;
     const question = questionArray[questionIndex];
 
-    if (selectedOption === question.correctAnswer) {
-        alert("Correct!");
-        AccountManager.addPoints(10);
-    } else {
-        alert(`Wrong answer! The correct answer was: ${question.options[question.correctAnswer]}`);
-    }
+    // Hole alle Antwort-Buttons
+    const buttons = document.querySelectorAll('.styled-btn');
 
-    if (quizType === 'fn') {
-        loadQuestionFn();
-    } else {
-        loadQuestionR6();
-    }
+    // Färbe die Buttons entsprechend ein
+    buttons.forEach((button, index) => {
+        if (index === question.correctAnswer) {
+            button.style.backgroundColor = 'green'; // Richtige Antwort grün
+        } else if (index === selectedOption) {
+            button.style.backgroundColor = 'red'; // Falsche Antwort rot
+        }
+        button.disabled = true; // Deaktiviere alle Buttons
+    });
+
+    // Nach 3 Sekunden zur nächsten Frage wechseln
+    setTimeout(() => {
+        if (quizType === 'fn') {
+            loadQuestionFn();
+        } else {
+            loadQuestionR6();
+        }
+    }, 3000);
 }
 
 /*******************************************************
@@ -682,15 +691,15 @@ function loadSettingsPage() {
                 <h2>${currentUser.username}</h2>
 
                 <div class="settings-options">
-                    <label>📝 Neuer Name:
+                    <label>📝 New name:
                         <input type="text" id="new-username" placeholder="Neuer Name" value="${currentUser.username}">
                     </label>
 
-                    <label>🔑 Neues Passwort:
+                    <label>🔑 New passwort:
                         <input type="password" id="new-password" placeholder="Mind. 4 Zeichen">
                     </label>
 
-                    <label>🖼️ Neues Profilbild:
+                    <label>🖼️ New Profilepic:
                         <select id="new-profile-pic">
                             ${[
                                 "defaultPic.jpg",
@@ -705,10 +714,10 @@ function loadSettingsPage() {
                         </select>
                     </label>
 
-                    <button onclick="saveSettings()">✅ Änderungen speichern</button>
-                    <button onclick="loadPage()">🔙 Zurück</button>
+                    <button onclick="saveSettings()">✅ Save changes</button>
+                    <button onclick="loadPage()">🔙 Back</button>
 
-                    <div id="save-confirmation" style="display: none; margin-top: 2vh; color: green; font-weight: bold;">✅ Änderungen gespeichert!</div>
+                    <div id="save-confirmation" style="display: none; margin-top: 2vh; color: green; font-weight: bold;">✅ Changes saved!</div>
                 </div>
             </div>
         </main>
