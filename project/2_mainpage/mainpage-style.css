@@ -591,6 +591,14 @@ nav a.active {
     cursor: not-allowed;
 }
 
+.sub-message {
+    background: #ffe9b3;
+    border-radius: 8px;
+    padding: 4px 8px;
+    margin: 2px 0;
+    display: inline-block;
+}
+
 /*****************************************
  * Quiz
 *****************************************/

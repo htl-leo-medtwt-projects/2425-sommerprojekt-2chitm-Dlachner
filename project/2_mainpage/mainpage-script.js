@@ -402,7 +402,7 @@ function loadStreamFullscreen(videoUrl, streamerName, streamTitle, profilePic) {
 
     // Chat-Nachrichten-Timer starten
     chatMessageInterval = setInterval(() => {
-        if (Math.random() < 0.25) {
+        if (Math.random() < 0.5) {
             const randomUsername = usernames[Math.floor(Math.random() * usernames.length)];
             const randomMessage = messages[Math.floor(Math.random() * messages.length)];
             addMessageToChat(randomUsername, randomMessage);
@@ -416,10 +416,12 @@ function loadStreamFullscreen(videoUrl, streamerName, streamTitle, profilePic) {
             const message = chatInputField.value.trim();
             if (message) {
                 let name = currentUser.username;
+                let isSub = false;
                 if (currentUser.subs && currentUser.subs.includes(streamerName)) {
                     name += "🔥";
+                    isSub = true;
                 }
-                addMessageToChat(name, message);
+                addMessageToChat(name, message, isSub);
                 chatInputField.value = "";
             }
         }
@@ -482,9 +484,13 @@ const usernames = [
     "QuizChampion🔥"
 ];
 
-function addMessageToChat(username, message) {
+function addMessageToChat(username, message, isSub = false) {
     const chatMessages = document.getElementById("chat-messages");
     const newMessage = document.createElement("p");
+    // Prüfe, ob Username eine Flamme enthält oder isSub true ist
+    if (isSub || username.includes("🔥")) {
+        newMessage.classList.add("sub-message");
+    }
     newMessage.innerHTML = `<span class="user">${username}:</span> ${message}`;
     chatMessages.appendChild(newMessage);
     chatMessages.scrollTop = chatMessages.scrollHeight;
