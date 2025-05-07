@@ -529,8 +529,8 @@ function loadQuizPageFn() {
         <div class="quizfn-background">
             <div class="quiz-center">
                 <img src="../Z-extra/pics/fortnite/Fortnite.png" alt="Fortnite Logo" class="quiz-logo">
-                <button class="button" id="play"><span id="readyb">Ready</span></button>
-                <button class="back-btn" onclick="loadPage()">Zurück</button>
+                <button onclick="loadQuestionFn()" class="button" id="play"><span id="readyb">Ready</span></button>
+                <button class="back-btn" onclick="loadPage()">Back</button>
             </div>
         </div>
     `;
@@ -541,13 +541,129 @@ function loadQuizPageR6() {
         <div class="quizr6-background">
             <div class="quiz-center">
                 <img src="../Z-extra/pics/r6/logo.png" alt="R6 Logo" class="quiz-logo">
-                <button class="button" id="play"><span id="readyb">Ready</span></button>
-                <button class="back-btn" onclick="loadPage()">Zurück</button>
+                <button onclick="loadQuestionR6()" class="button" id="play"><span id="readyb">Ready</span></button>
+                <button class="back-btn" onclick="loadPage()">Back</button>
             </div>
         </div>
     `;
 }
 
+function loadQuestionFn() {
+    const randomIndex = Math.floor(Math.random() * quizQuestionsFn.length);
+    const question = quizQuestionsFn[randomIndex];
+
+    content.innerHTML = `
+        <div class="quizfn-background">
+            <div class="quiz-question">
+                <h2>${question.question}</h2>
+                <div class="quiz-options">
+                    ${question.options.map((option, i) => `
+                        <button onclick="checkAnswer(${randomIndex}, ${i}, 'fn')">${option}</button>
+                    `).join('')}
+                </div>
+                <button class="back-btn" onclick="loadPage()">Back</button>
+            </div>
+        </div>
+    `;
+}
+
+function loadQuestionR6() {
+    const randomIndex = Math.floor(Math.random() * quizQuestionsR6.length);
+    const question = quizQuestionsR6[randomIndex];
+
+    content.innerHTML = `
+        <div class="quizr6-background">
+            <div class="quiz-question">
+                <h2>${question.question}</h2>
+                <div class="quiz-options">
+                    ${question.options.map((option, i) => `
+                        <button onclick="checkAnswer(${randomIndex}, ${i}, 'r6')">${option}</button>
+                    `).join('')}
+                </div>
+                <button class="back-btn" onclick="loadPage()">Back</button>
+            </div>
+        </div>
+    `;
+}
+
+function checkAnswer(questionIndex, selectedOption, quizType) {
+    const questionArray = quizType === 'fn' ? quizQuestionsFn : quizQuestionsR6;
+    const question = questionArray[questionIndex];
+
+    if (selectedOption === question.correctAnswer) {
+        alert("Correct!");
+        AccountManager.addPoints(10);
+    } else {
+        alert(`Wrong answer! The correct answer was: ${question.options[question.correctAnswer]}`);
+    }
+
+    if (quizType === 'fn') {
+        loadQuestionFn();
+    } else {
+        loadQuestionR6();
+    }
+}
+
+/*******************************************************
+ * 
+ *                       Questions
+ * 
+ *******************************************************/
+const quizQuestionsFn = [
+    {
+        question: "What is the maximum number of players in a Fortnite Battle Royale match?",
+        options: ["50", "100", "150", "200"],
+        correctAnswer: 1
+    },
+    {
+        question: "What is the name of the in-game currency in Fortnite?",
+        options: ["V-Bucks", "Coins", "Credits", "Tokens"],
+        correctAnswer: 0
+    },
+    {
+        question: "What year was Fortnite Battle Royale released?",
+        options: ["2015", "2016", "2017", "2018"],
+        correctAnswer: 2
+    },
+    {
+        question: "What is the name of the storm in Fortnite?",
+        options: ["The Circle", "The Eye", "The Storm", "The Zone"],
+        correctAnswer: 2
+    },
+    {
+        question: "What is the name of the creative mode in Fortnite?",
+        options: ["Sandbox", "Creative", "Build Mode", "Free Play"],
+        correctAnswer: 1
+    }
+];
+
+const quizQuestionsR6 = [
+    {
+        question: "Which operator in Rainbow Six Siege is known for using a sledgehammer?",
+        options: ["Sledge", "Thermite", "Ash", "Mute"],
+        correctAnswer: 0
+    },
+    {
+        question: "Which Rainbow Six Siege map is set on a plane?",
+        options: ["Plane", "Airplane", "Presidential Plane", "Skyline"],
+        correctAnswer: 2
+    },
+    {
+        question: "Which Rainbow Six Siege operator can deploy a mounted LMG?",
+        options: ["Tachanka", "Fuze", "Kapkan", "Blitz"],
+        correctAnswer: 0
+    },
+    {
+        question: "Which Rainbow Six Siege operator uses a drone to detect enemies?",
+        options: ["Twitch", "IQ", "Echo", "Dokkaebi"],
+        correctAnswer: 0
+    },
+    {
+        question: "Which Rainbow Six Siege operator can hack enemy cameras?",
+        options: ["Dokkaebi", "Vigil", "Mozzie", "Echo"],
+        correctAnswer: 0
+    }
+];
 /*******************************************************
  * 
  *                      Settings
