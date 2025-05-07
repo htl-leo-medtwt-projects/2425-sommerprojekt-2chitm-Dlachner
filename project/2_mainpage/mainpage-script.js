@@ -594,8 +594,15 @@ function loadQuizPageR6() {
     `;
 }
 
+let lastFnQuestionIndex = null;
+let lastR6QuestionIndex = null;
+
 function loadQuestionFn() {
-    const randomIndex = Math.floor(Math.random() * quizQuestionsFn.length);
+    let randomIndex;
+    do {
+        randomIndex = Math.floor(Math.random() * quizQuestionsFn.length);
+    } while (quizQuestionsFn.length > 1 && randomIndex === lastFnQuestionIndex);
+    lastFnQuestionIndex = randomIndex;
     const question = quizQuestionsFn[randomIndex];
 
     content.innerHTML = `
@@ -614,7 +621,11 @@ function loadQuestionFn() {
 }
 
 function loadQuestionR6() {
-    const randomIndex = Math.floor(Math.random() * quizQuestionsR6.length);
+    let randomIndex;
+    do {
+        randomIndex = Math.floor(Math.random() * quizQuestionsR6.length);
+    } while (quizQuestionsR6.length > 1 && randomIndex === lastR6QuestionIndex);
+    lastR6QuestionIndex = randomIndex;
     const question = quizQuestionsR6[randomIndex];
 
     content.innerHTML = `
@@ -636,10 +647,8 @@ function checkAnswer(questionIndex, selectedOption, quizType) {
     const questionArray = quizType === 'fn' ? quizQuestionsFn : quizQuestionsR6;
     const question = questionArray[questionIndex];
 
-    // Hole alle Antwort-Buttons
     const buttons = document.querySelectorAll('.styled-btn');
 
-    // Färbe die Buttons entsprechend ein
     buttons.forEach((button, index) => {
         if (index === question.correctAnswer) {
             button.style.backgroundColor = 'green';
@@ -653,7 +662,6 @@ function checkAnswer(questionIndex, selectedOption, quizType) {
         AccountManager.addPoints(10);
     }
 
-    // Nach 3 Sekunden zur nächsten Frage wechseln
     setTimeout(() => {
         if (quizType === 'fn') {
             loadQuestionFn();
@@ -693,6 +701,31 @@ const quizQuestionsFn = [
         question: "What is the name of the creative mode in Fortnite?",
         options: ["Sandbox", "Creative", "Build Mode", "Free Play"],
         correctAnswer: 1
+    },
+    {
+        question: "Which weapon rarity is the rarest in Fortnite?",
+        options: ["Legendary", "Epic", "Rare", "Mythic"],
+        correctAnswer: 3
+    },
+    {
+        question: "What vehicle was vaulted and then returned in Chapter 2?",
+        options: ["Shopping Cart", "Quadcrasher", "Baller", "Golf Cart"],
+        correctAnswer: 2
+    },
+    {
+        question: "Which of these is NOT a Fortnite location?",
+        options: ["Tilted Towers", "Dusty Depot", "Pleasant Park", "Sunny Shores"],
+        correctAnswer: 3
+    },
+    {
+        question: "Which season introduced the Battle Pass?",
+        options: ["Season 1", "Season 2", "Season 3", "Season 4"],
+        correctAnswer: 1
+    },
+    {
+        question: "What is the name of the Fortnite island?",
+        options: ["Apollo", "Athena", "Artemis", "Olympus"],
+        correctAnswer: 1
     }
 ];
 
@@ -721,6 +754,31 @@ const quizQuestionsR6 = [
         question: "Which Rainbow Six Siege operator can hack enemy cameras?",
         options: ["Dokkaebi", "Vigil", "Mozzie", "Echo"],
         correctAnswer: 0
+    },
+    {
+        question: "Which operator can place barbed wire?",
+        options: ["Jäger", "Bandit", "Smoke", "All defenders"],
+        correctAnswer: 3
+    },
+    {
+        question: "What is the name of the in-game currency in Rainbow Six Siege?",
+        options: ["Siege Points", "R6 Credits", "Rainbow Coins", "Siege Bucks"],
+        correctAnswer: 1
+    },
+    {
+        question: "Which operator has the gadget 'Black Eye'?",
+        options: ["Pulse", "Valkyrie", "Frost", "Echo"],
+        correctAnswer: 1
+    },
+    {
+        question: "Which map is set in Japan?",
+        options: ["Kanal", "Skyscraper", "Theme Park", "Villa"],
+        correctAnswer: 1
+    },
+    {
+        question: "Which attacker can breach reinforced walls?",
+        options: ["Ash", "Thermite", "Twitch", "IQ"],
+        correctAnswer: 1
     }
 ];
 /*******************************************************
