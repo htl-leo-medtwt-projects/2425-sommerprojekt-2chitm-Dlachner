@@ -29,7 +29,7 @@ function loadPage() {
         <aside class="sidebar">
             <div class="logo">🐸 Froggo</div>
             <nav>
-                <a href="#" class="active">Following</a>
+                <a href="#" class="active" id=following-link>Following</a>
             </nav>
             <div class="live-section">
                 <h3>Live</h3>
@@ -106,9 +106,64 @@ function loadPage() {
             }
         });
     });
+
+    document.getElementById("following-link").addEventListener("click", function(e) {
+        e.preventDefault();
+        showFollowingOverlay();
+    });
 }
 
 loadPage();
+
+function showFollowingOverlay() {
+    const overlay = document.createElement('div');
+    overlay.style.position = 'fixed';
+    overlay.style.top = 0;
+    overlay.style.left = 0;
+    overlay.style.width = '100vw';
+    overlay.style.height = '100vh';
+    overlay.style.background = 'rgba(0,0,0,0.4)';
+    overlay.style.zIndex = 9999;
+    overlay.style.display = 'flex';
+    overlay.style.justifyContent = 'center';
+    overlay.style.alignItems = 'center';
+
+    const box = document.createElement('div');
+    box.style.background = '#fff';
+    box.style.borderRadius = '16px';
+    box.style.padding = '2rem';
+    box.style.maxWidth = '90vw';
+    box.style.maxHeight = '80vh';
+    box.style.overflowY = 'auto';
+    box.style.boxShadow = '0 4px 24px rgba(0,0,0,0.2)';
+    box.innerHTML = `
+        <h2 style="margin-top:0;">Following</h2>
+        <div id="following-list"></div>
+        <button style="margin-top:2rem; padding:0.7em 2em; border-radius:10px; background:#eee; border:none; cursor:pointer;" id="close-following">Schließen</button>
+    `;
+
+    overlay.appendChild(box);
+    document.body.appendChild(overlay);
+
+    const list = document.getElementById('following-list');
+    const followed = currentUser.followers || [];
+    let html = '';
+    [...fn_streamer, ...r6_streamer].forEach(s => {
+        if (followed.includes(s.Name)) {
+            html += `
+                <div style="display:flex;align-items:center;gap:1em;margin-bottom:1em;">
+                    <img src="${s.Pf}" style="width:40px;height:40px;border-radius:50%;border:1px solid #ccc;">
+                    <span>@${s.Name}</span>
+                    <span style="margin-left:auto;font-weight:bold;color:${s.Status ? 'green' : '#aaa'}">${s.Status ? 'LIVE' : 'offline'}</span>
+                </div>
+            `;
+        }
+    });
+    list.innerHTML = html || '<div>Du folgst noch niemandem.</div>';
+
+    document.getElementById('close-following').onclick = () => overlay.remove();
+    overlay.onclick = e => { if (e.target === overlay) overlay.remove(); };
+}
 
 /*******************************************************
  * 

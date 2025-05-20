@@ -816,3 +816,201 @@ nav a.active {
     font-size: 1em;
     cursor: pointer;
 }
+
+/*****************************************
+ * Handyformat
+*****************************************/
+@media (max-width: 800px) {
+    html, body {
+        overflow: auto;
+        font-size: 15px;
+        overflow-x: hidden;
+    }
+    .container {
+        flex-direction: column;
+        height: auto;
+        width: 100vw;
+    }
+    .sidebar {
+        flex-direction: row;
+        width: 100vw;
+        height: auto;
+        padding: 1vw 2vw;
+        align-items: center;
+        justify-content: space-between;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+    .logo {
+        font-size: 2rem;
+        margin-bottom: 0;
+    }
+    nav {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+    }
+    nav a {
+        font-size: 1.1rem;
+        padding: 0.5rem 1rem;
+    }
+    .live-section, .offline-section {
+        margin-top: 0;
+        font-size: 1rem;
+    }
+    .content {
+        padding: 2vw 2vw;
+        gap: 2vh;
+    }
+    .top-bar {
+        flex-direction: column;
+        gap: 1vh;
+        padding: 1vh 1vw;
+    }
+    .search-bar {
+        max-width: 100vw;
+        width: 100%;
+        font-size: 1rem;
+    }
+    .profile-icon {
+        margin-left: 0;
+        margin-top: 1vh;
+    }
+    .section h2 {
+        font-size: 1.3rem;
+    }
+    .owl-carousel .item,
+    .stream-box {
+        max-width: 100vw;
+        min-width: 90vw;
+        width: 100%;
+    }
+    .stream-container {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .category-container {
+        flex-direction: row;
+        gap: 4vw;
+        justify-content: center;
+        align-items: center;
+    }
+    .category-img {
+        display: block !important;
+        width: 40vw;
+        min-width: 100px;
+        max-width: 45vw;
+        height: 22vw;
+        min-height: 60px;
+        max-height: 120px;
+        margin: 0;
+    }
+
+    .category-header {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        text-align: center;
+    }
+    .category-image {
+        display: none !important;
+    }
+    .category-info {
+        width: 100%;
+        max-width: 95vw;
+    }
+    .quiz-logo {
+        width: 70vw;
+        max-width: 90vw;
+    }
+    .question-container {
+        width: 98vw;
+        padding: 10px;
+    }
+    .settings-main {
+        left: 0;
+        transform: none;
+        padding: 2vh 2vw;
+    }
+    .settings-profile-pic {
+        width: 30vw;
+        height: 30vw;
+        min-width: 100px;
+        min-height: 100px;
+    }
+    .settings-options {
+        max-width: 95vw;
+    }
+    .settings-options input,
+    .settings-options select {
+        max-width: 90vw;
+        font-size: 1rem;
+    }
+    .fullscreen-container {
+        width: 100vw;
+        height: 100vh;
+    }
+    .stream-chat-wrapper {
+        flex-direction: column;
+        height: auto;
+    }
+    .stream-full {
+        width: 100vw;
+        padding: 0.5rem;
+    }
+    .chat-box {
+        width: 100vw;
+        padding: 0.5rem;
+        min-height: 40vh;
+        flex: 1 1 60%;
+    }
+    .stream-info-bar {
+        flex-direction: row;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 0.3rem;
+        font-size: 1rem;
+        padding: 0.2rem 0.5rem;
+        background: none;
+    }
+    .stream-profile-icon {
+        width: 2rem;
+        height: 2rem;
+    }
+    .streamer-info-text h3 {
+        font-size: 1.1rem;
+        margin: 0 0 0.2em 0;
+    }
+    .streamer-info-text p {
+        font-size: 0.95rem;
+        margin: 0;
+    }
+    .stream-meta {
+        gap: 0.5rem;
+        font-size: 0.95rem;
+    }
+
+    .profile-icon {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        margin: 0;
+
+        background: rgba(255,255,255,0.8);
+        border-radius: 50%;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .top-bar .profile-icon {
+        position: static;
+        background: none;
+        box-shadow: none;
+    }
+
+    .live-section,
+    .offline-section {
+        display: none !important;
+    }
+}
