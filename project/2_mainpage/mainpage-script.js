@@ -1018,7 +1018,7 @@ function loadSettingsPage() {
 
                     <button onclick="saveSettings()">✅ Save changes</button>
                     <button onclick="loadPage()">🔙 Back</button>
-                    <button onclick="openMoreOptions()" style="background:#e0e0e0;color:#222;">⚙️ Mehr Optionen</button>
+                    <button onclick="openMoreOptions()" style="background:#e0e0e0;color:#222;">⚙️ More options</button>
 
                     <div id="save-confirmation" style="display: none; margin-top: 2vh; color: green; font-weight: bold;">✅ Changes saved!</div>
                 </div>
@@ -1061,7 +1061,7 @@ function openMoreOptions() {
     const box = document.createElement('div');
     box.className = 'options-box';
     box.innerHTML = `
-        <h2 style="margin-top:0;">Mehr Optionen</h2>
+        <h2 style="margin-top:0;">More options</h2>
         <button id="darkmode-toggle" class="darkmode-btn">
             ${document.body.classList.contains('darkmode') ? "☀️ Light Mode" : "🌙 Dark Mode"}
         </button>
@@ -1069,7 +1069,7 @@ function openMoreOptions() {
             🚪 Logout
         </button>
         <button id="close-more-options" class="close-btn">
-            Schließen
+            Close
         </button>
     `;
 
