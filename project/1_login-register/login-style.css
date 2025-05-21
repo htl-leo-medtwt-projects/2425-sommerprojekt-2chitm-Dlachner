@@ -84,7 +84,6 @@ input {
     cursor: pointer;
 }
 
-/* Handy-Optimierung */
 @media (max-width: 600px) {
     html, body {
         font-size: 2.8vh;
