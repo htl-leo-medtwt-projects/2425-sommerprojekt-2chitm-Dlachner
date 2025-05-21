@@ -918,6 +918,7 @@ function loadSettingsPage() {
 
                     <button onclick="saveSettings()">✅ Save changes</button>
                     <button onclick="loadPage()">🔙 Back</button>
+                    <button onclick="logoutUser()" style="background:#ff4040;color:white;">🚪 Logout</button>
 
                     <div id="save-confirmation" style="display: none; margin-top: 2vh; color: green; font-weight: bold;">✅ Changes saved!</div>
                 </div>
@@ -931,6 +932,11 @@ function loadSettingsPage() {
     profileSelect.addEventListener("change", () => {
         previewImg.src = `../Z-extra/pics/profilePic/${profileSelect.value}`;
     });
+}
+
+function logoutUser() {
+    localStorage.removeItem('loggedInUser');
+    window.location.href = "../1_login-register/login-index.html";
 }
 
 function saveSettings() {
