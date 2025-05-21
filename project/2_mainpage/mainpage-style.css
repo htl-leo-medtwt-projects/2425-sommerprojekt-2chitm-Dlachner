@@ -418,6 +418,54 @@ nav a.active {
     background-color: #eaf9e6;
 }
 
+.options-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.4);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.options-box {
+    background: #fff;
+    border-radius: 16px;
+    padding: 2rem;
+    min-width: 250px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.options-box button {
+    padding: 0.7em 2em;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1em;
+    margin: 0.2em 0;
+}
+
+.options-box .logout-btn {
+    background: #ff4040;
+    color: white;
+}
+
+.options-box .close-btn {
+    background: #eee;
+    color: #222;
+}
+
+.options-box .darkmode-btn {
+    background: #eee;
+    color: #222;
+}
+
 /*****************************************
  * Stream
 *****************************************/
@@ -815,6 +863,48 @@ nav a.active {
     border-radius: 10px;
     font-size: 1em;
     cursor: pointer;
+}
+
+/*****************************************
+ * Darkmode
+*****************************************/
+body.darkmode, .darkmode {
+    --background-color: #181a1b;
+    --main-color: #23272a;
+    --colorForBoxes: #23272a;
+    --top-bar-bg: #23272a;
+    color: #f0f0f0;
+    background-color: #181a1b !important;
+}
+
+body.darkmode .stream-box,
+body.darkmode .category-header,
+body.darkmode .settings-main,
+body.darkmode .chat-box,
+body.darkmode .question-container {
+    background: #23272a !important;
+    color: #f0f0f0 !important;
+}
+
+body.darkmode .top-bar,
+body.darkmode .sidebar {
+    background: #23272a !important;
+    color: #f0f0f0 !important;
+}
+
+body.darkmode .settings-options button,
+body.darkmode .quiz-button,
+body.darkmode .sub-btn {
+    background: #444 !important;
+    color: #fff !important;
+}
+
+body.darkmode .settings-options input,
+body.darkmode .settings-options select,
+body.darkmode .chat-input input {
+    background: #23272a !important;
+    color: #fff !important;
+    border-color: #444 !important;
 }
 
 /*****************************************

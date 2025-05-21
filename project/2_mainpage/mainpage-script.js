@@ -918,7 +918,7 @@ function loadSettingsPage() {
 
                     <button onclick="saveSettings()">✅ Save changes</button>
                     <button onclick="loadPage()">🔙 Back</button>
-                    <button onclick="logoutUser()" style="background:#ff4040;color:white;">🚪 Logout</button>
+                    <button onclick="openMoreOptions()" style="background:#e0e0e0;color:#222;">⚙️ Mehr Optionen</button>
 
                     <div id="save-confirmation" style="display: none; margin-top: 2vh; color: green; font-weight: bold;">✅ Changes saved!</div>
                 </div>
@@ -932,6 +932,58 @@ function loadSettingsPage() {
     profileSelect.addEventListener("change", () => {
         previewImg.src = `../Z-extra/pics/profilePic/${profileSelect.value}`;
     });
+}
+
+function toggleDarkMode() {
+    document.body.classList.toggle('darkmode');
+    if (document.body.classList.contains('darkmode')) {
+        localStorage.setItem('darkmode', '1');
+    } else {
+        localStorage.removeItem('darkmode');
+    }
+
+    const btn = document.getElementById('darkmode-btn') || document.getElementById('darkmode-toggle');
+    if (btn) {
+        btn.textContent = document.body.classList.contains('darkmode') ? "☀️ Light Mode" : "🌙 Dark Mode";
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    if (localStorage.getItem('darkmode')) {
+        document.body.classList.add('darkmode');
+    }
+});
+
+function openMoreOptions() {
+    const overlay = document.createElement('div');
+    overlay.className = 'options-overlay';
+
+    const box = document.createElement('div');
+    box.className = 'options-box';
+    box.innerHTML = `
+        <h2 style="margin-top:0;">Mehr Optionen</h2>
+        <button id="darkmode-toggle" class="darkmode-btn">
+            ${document.body.classList.contains('darkmode') ? "☀️ Light Mode" : "🌙 Dark Mode"}
+        </button>
+        <button id="logout-btn" class="logout-btn">
+            🚪 Logout
+        </button>
+        <button id="close-more-options" class="close-btn">
+            Schließen
+        </button>
+    `;
+
+    overlay.appendChild(box);
+    document.body.appendChild(overlay);
+
+    document.getElementById('darkmode-toggle').onclick = () => {
+        toggleDarkMode();
+        document.getElementById('darkmode-toggle').textContent =
+            document.body.classList.contains('darkmode') ? "☀️ Light Mode" : "🌙 Dark Mode";
+    };
+    document.getElementById('logout-btn').onclick = () => logoutUser();
+    document.getElementById('close-more-options').onclick = () => overlay.remove();
+    overlay.onclick = e => { if (e.target === overlay) overlay.remove(); };
 }
 
 function logoutUser() {
@@ -957,7 +1009,6 @@ function saveSettings() {
         confirmation.style.display = "none";
     }, 3000);
 }
-
 
 function changeUsername() {
     let newName = prompt("Neuer Benutzername:");
