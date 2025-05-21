@@ -466,6 +466,24 @@ nav a.active {
     color: #222;
 }
 
+.search-channel-result, .search-stream-result {
+    background: #f8f8f8;
+    border-radius: 10px;
+    padding: 1em;
+    margin-bottom: 1em;
+    transition: background 0.2s;
+}
+.search-channel-result:hover, .search-stream-result:hover {
+    background: #e0ffe0;
+}
+.search-follow-btn {
+    background: #c0eaff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.4em 1.2em;
+    cursor: pointer;
+    font-size: 1em;
+}
 /*****************************************
  * Stream
 *****************************************/
@@ -1102,5 +1120,32 @@ body.darkmode .chat-input input {
     .live-section,
     .offline-section {
         display: none !important;
+    }
+
+    .search-channel-result,
+    .search-stream-result {
+        max-width: 98vw;
+        width: 98vw;
+        box-sizing: border-box;
+        padding: 0.7em 0.5em;
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 1em;
+        overflow-x: auto;
+        word-break: break-word;
+    }
+    .search-channel-result img,
+    .search-stream-result img {
+        min-width: 32px;
+        max-width: 40px;
+        width: 8vw;
+        height: 8vw;
+        min-height: 32px;
+        max-height: 40px;
+    }
+    .search-follow-btn {
+        font-size: 1em;
+        padding: 0.3em 1em;
+        min-width: 70px;
     }
 }

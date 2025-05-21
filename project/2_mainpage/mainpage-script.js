@@ -27,7 +27,7 @@ function loadPage() {
     content.innerHTML = `
         <!-- Sidebar -->
         <aside class="sidebar">
-            <div class="logo">🐸 Froggo</div>
+            <div class="logo" onclick="loadPage()">🐸 Froggo</div>
             <nav>
                 <a href="#" class="active" id=following-link>Following</a>
             </nav>
@@ -42,7 +42,7 @@ function loadPage() {
         <!-- Main Content -->
         <main class="content">
             <header class="top-bar">
-                <input type="text" placeholder="Search" class="search-bar">
+                <input type="text" placeholder="Search" class="search-bar" id="main-search-bar">
                 <div onclick="loadSettingsPage()" class="profile-icon" title="${currentUser.username}">
                     <img src="../Z-extra/pics/profilePic/${currentUser.pp}" alt="Profile Picture" class="profile-pic">
                 </div>
@@ -111,9 +111,91 @@ function loadPage() {
         e.preventDefault();
         showFollowingOverlay();
     });
+
+    // Suchfunktion
+    const searchInput = document.getElementById("main-search-bar");
+    searchInput.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+            doSearch(searchInput.value.trim().toLowerCase());
+        }
+    });
 }
 
 loadPage();
+
+function doSearch(query) {
+    const main = document.querySelector("main.content");
+    if (!query) {
+        loadPage();
+        return;
+    }
+
+    // Suche in allen Streamern
+    const allStreamers = [...fn_streamer, ...r6_streamer];
+    const channelResults = allStreamers.filter(s =>
+        s.Name.toLowerCase().includes(query)
+    );
+
+    // Suche in allen Live-Streams
+    const liveResults = allStreamers.filter(s =>
+        s.Status && (
+            s.Name.toLowerCase().includes(query) ||
+            (s.Streamtitle && s.Streamtitle.toLowerCase().includes(query))
+        )
+    );
+
+    let html = `<section class="section"><h2>Kanäle</h2>`;
+    if (channelResults.length === 0) {
+        html += `<div>Keine Kanäle gefunden.</div>`;
+    } else {
+        html += channelResults.map(s => `
+            <div class="search-channel-result" style="display:flex;align-items:center;gap:1em;margin-bottom:1em;">
+                <img src="${s.Pf}" style="width:40px;height:40px;border-radius:50%;border:1px solid #ccc;">
+                <span>@${s.Name}</span>
+                <button class="search-follow-btn" data-name="${s.Name}">
+                    ${AccountManager.isFollowing(s.Name) ? "Unfollow" : "Follow"}
+                </button>
+            </div>
+        `).join('');
+    }
+    html += `</section>`;
+
+    html += `<section class="section"><h2>Live-Streams</h2>`;
+    if (liveResults.length === 0) {
+        html += `<div>Keine Live-Streams gefunden.</div>`;
+    } else {
+        html += liveResults.map(s => `
+            <div class="search-stream-result stream-box" style="cursor:pointer;margin-bottom:1em;" onclick="loadStreamFullscreen('${s.Stream}', '${s.Name}', '${s.Streamtitle || "Cooler Stream"}', '${s.Pf}')">
+                <div style="display:flex;align-items:center;gap:1em;">
+                    <img src="${s.Pf}" style="width:40px;height:40px;border-radius:50%;border:1px solid #ccc;">
+                    <div>
+                        <div style="font-weight:bold;">@${s.Name}</div>
+                        <div style="font-size:0.95em;color:#555;">${s.Streamtitle || ""}</div>
+                    </div>
+                    <span style="margin-left:auto;font-weight:bold;color:green;">LIVE</span>
+                </div>
+            </div>
+        `).join('');
+    }
+    html += `</section>`;
+
+    main.innerHTML = html;
+
+    document.querySelectorAll(".search-follow-btn").forEach(btn => {
+        btn.onclick = (e) => {
+            e.stopPropagation();
+            const name = btn.getAttribute("data-name");
+            if (AccountManager.isFollowing(name)) {
+                AccountManager.unfollowStreamer(name);
+                btn.textContent = "Follow";
+            } else {
+                AccountManager.followStreamer(name);
+                btn.textContent = "Unfollow";
+            }
+            updateStreamerBoxes();
+        };
+    });
+}
 
 function showFollowingOverlay() {
     const overlay = document.createElement('div');
@@ -222,6 +304,15 @@ function loadFortniteCategoryPage() {
     });
 
     updateStreamerBoxes();
+
+    const searchInput = document.querySelector(".search-bar");
+    if (searchInput) {
+        searchInput.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") {
+                doSearch(searchInput.value.trim().toLowerCase());
+            }
+        });
+    }
 }
 
 function renderFortniteStreamers() {
@@ -302,6 +393,15 @@ function loadR6CategoryPage() {
 
     // Aktualisiere die Sidebar
     updateStreamerBoxes();
+
+    const searchInput = document.querySelector(".search-bar");
+    if (searchInput) {
+        searchInput.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") {
+                doSearch(searchInput.value.trim().toLowerCase());
+            }
+        });
+    }
 }
 
 function renderR6Streamers() {
